@@ -18,9 +18,24 @@ class RobotType(models.Model):
         default=WHEELER,
     )
 
+    def __str__(self):
+        return f'{self.robot_type}'
+
 
 class CommunicationDevice(models.Model):
     device_id = models.CharField(max_length=20)
     device_x_size = models.FloatField()
     device_y_size = models.FloatField()
     device_z_size = models.FloatField()
+
+    def __str__(self):
+        return f'{self.device_id}'
+
+
+class Robot(models.Model):
+    robot_name = models.CharField(max_length=20)
+    robot_manufacturer = models.CharField(max_length=20)
+    robot_serial_number = models.CharField(max_length=20)
+    robot_production_date = models.DateTimeField()
+    robot_type = models.ForeignKey(RobotType, on_delete=models.CASCADE)
+    communication_device_id = models.ForeignKey(CommunicationDevice, on_delete=models.CASCADE)

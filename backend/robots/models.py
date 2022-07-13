@@ -13,7 +13,14 @@ class RobotType(models.Model):
         (FLYING, 'Flying'),
     ]
     robot_type = models.CharField(
-        max_length=20,
+        max_length=2,
         choices=ROBOT_TYPE_CHOICE,
-        default='none'
+        default=WHEELER,
     )
+
+
+class CommunicationDevice(models.Model):
+    device_id = models.CharField(max_length=20)
+    device_x_size = models.FloatField()
+    device_y_size = models.FloatField()
+    device_z_size = models.FloatField()

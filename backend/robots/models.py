@@ -1,3 +1,4 @@
+from tkinter import CASCADE
 from django.db import models
 
 
@@ -36,6 +37,26 @@ class Robot(models.Model):
     robot_name = models.CharField(max_length=20)
     robot_manufacturer = models.CharField(max_length=20)
     robot_serial_number = models.CharField(max_length=20)
-    robot_production_date = models.DateTimeField()
+    robot_production_date = models.DateField()
     robot_type = models.ForeignKey(RobotType, on_delete=models.CASCADE)
     communication_device_id = models.ForeignKey(CommunicationDevice, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.robot_name}'
+
+
+class Location(models.Model):
+    robot_name = models.ForeignKey(Robot, on_delete=models.CASCADE)
+    communication_device_id = models.ForeignKey(CommunicationDevice, on_delete=CASCADE)
+    timestamp = models.DateTimeField()
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+
+
+class Telemetry(models.Model):
+    robot_name = models.ForeignKey(Robot, on_delete=models.CASCADE)
+    communication_device_id = models.ForeignKey(CommunicationDevice, on_delete=CASCADE)
+    timestamp = models.DateTimeField()
+    humidity = models.FloatField()
+    temperature = models.FloatField()
+    pressure = models.FloatField()

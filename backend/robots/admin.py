@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Client, RobotType, CommunicationDevice, Robot, Location, Telemetry
+from .models import Client, RobotManufacturer, RobotType, CommunicationDevice, Robot, Location, Telemetry
 
 
 @admin.register(Client)
@@ -16,6 +16,16 @@ class RobotTypeAdmin(admin.ModelAdmin):
     list_display = ('robot_type',)
 
 
+@admin.register(RobotManufacturer)
+class RobotManufacturerAdmin(admin.ModelAdmin):
+    list_display = (
+        'name',
+        'country_of_origin',
+        'HQ_location',
+        'robot_types'
+    )
+
+
 @admin.register(CommunicationDevice)
 class CommunicationDeviceAdmin(admin.ModelAdmin):
     list_display = (
@@ -28,7 +38,7 @@ class CommunicationDeviceAdmin(admin.ModelAdmin):
 
 @admin.register(Robot)
 class RobotAdmin(admin.ModelAdmin):
-    list_select_related = ('robot_type', 'communication_device_id')
+    list_select_related = ('client', 'robot_type', 'communication_device_id')
     list_display = (
         'robot_name',
         'robot_owner',

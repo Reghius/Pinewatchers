@@ -6,6 +6,9 @@ class Client(models.Model):
     name = models.CharField(max_length=20)
     KRS_number = models.CharField(max_length=10)
 
+    def __str__(self):
+        return f'{self.name}'
+
 
 class RobotType(models.Model):
     WHEELER = '4WEELER'
@@ -34,6 +37,9 @@ class RobotManufacturer(models.Model):
     HQ_location = models.CharField(max_length=20)
     robot_types = models.CharField(max_length=20, choices=RobotType.ROBOT_TYPE_CHOICE)
 
+    def __str__(self):
+        return f'{self.name}'
+
 
 class CommunicationDevice(models.Model):
     device_id = models.CharField(max_length=20)
@@ -47,6 +53,7 @@ class CommunicationDevice(models.Model):
 
 class Robot(models.Model):
     robot_name = models.CharField(max_length=20)
+    robot_owner = models.ForeignKey(Client, on_delete=models.CASCADE)
     robot_manufacturer = models.CharField(max_length=20)
     robot_serial_number = models.CharField(max_length=20)
     robot_production_date = models.DateField()

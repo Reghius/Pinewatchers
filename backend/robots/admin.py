@@ -1,5 +1,14 @@
 from django.contrib import admin
-from .models import RobotType, CommunicationDevice, Robot, Location, Telemetry
+from .models import Client, RobotType, CommunicationDevice, Robot, Location, Telemetry
+
+
+@admin.register(Client)
+class ClientAdmin(admin.ModelAdmin):
+    list_display = (
+        'name',
+        'KRS_number'
+    )
+
 
 @admin.register(RobotType)
 class RobotTypeAdmin(admin.ModelAdmin):
@@ -22,6 +31,7 @@ class RobotAdmin(admin.ModelAdmin):
     list_select_related = ('robot_type', 'communication_device_id')
     list_display = (
         'robot_name',
+        'robot_owner',
         'robot_manufacturer',
         'robot_serial_number',
         'robot_production_date',

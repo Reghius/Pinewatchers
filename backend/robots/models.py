@@ -2,6 +2,11 @@ from tkinter import CASCADE
 from django.db import models
 
 
+class Client(models.Model):
+    name = models.CharField(max_length=20)
+    KRS_number = models.CharField(max_length=10)
+
+
 class RobotType(models.Model):
     WHEELER = '4WEELER'
     AMPHIBIAN = 'AMPHIBIAN'
@@ -21,6 +26,13 @@ class RobotType(models.Model):
 
     def __str__(self):
         return f'{self.robot_type}'
+
+
+class RobotManufacturer(models.Model):
+    name = models.CharField(max_length=20)
+    country_of_origin = models.CharField(max_length=20)
+    HQ_location = models.CharField(max_length=20)
+    robot_types = models.CharField(max_length=20, choices=RobotType.ROBOT_TYPE_CHOICE)
 
 
 class CommunicationDevice(models.Model):

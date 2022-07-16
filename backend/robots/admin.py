@@ -38,7 +38,7 @@ class CommunicationDeviceAdmin(admin.ModelAdmin):
 
 @admin.register(Robot)
 class RobotAdmin(admin.ModelAdmin):
-    # list_select_related = ('client', 'robot_type', 'communication_device_name')
+    # list_select_related = ('owner', 'type', 'communication_device_name', 'manufacturer')
     list_display = (
         'name',
         'owner',
@@ -52,7 +52,7 @@ class RobotAdmin(admin.ModelAdmin):
 
 @admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
-    list_select_related = ('robot_name', 'communication_device_name')
+    # list_select_related = ('robot_name', 'communication_device_name')
     list_display = (
         'robot_name',
         'communication_device_name',
@@ -64,7 +64,7 @@ class LocationAdmin(admin.ModelAdmin):
 
 @admin.register(Telemetry)
 class TelemetryAdmin(admin.ModelAdmin):
-    list_select_related = ('robot_name', 'communication_device_name')
+    # list_select_related = ('robot_name', 'communication_device_name')
     list_display = (
         'robot_name',
         'communication_device_name',

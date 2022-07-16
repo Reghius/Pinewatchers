@@ -54,7 +54,7 @@ class CommunicationDevice(models.Model):
 class Robot(models.Model):
     name = models.CharField(max_length=20)
     owner = models.ForeignKey(Client, on_delete=models.CASCADE)
-    manufacturer = models.CharField(max_length=20)
+    manufacturer = models.ForeignKey(RobotManufacturer, on_delete=models.CASCADE)
     serial_number = models.CharField(max_length=20)
     production_date = models.DateField()
     type = models.ForeignKey(RobotType, on_delete=models.CASCADE)

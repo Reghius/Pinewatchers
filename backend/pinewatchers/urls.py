@@ -7,4 +7,5 @@ urlpatterns = [
     path('robots/', views.get_robots, name='robots'),
     path('robots/data/', views.get_robots_data, name='robots data'),
     path('robot/<int:robot_id>', views.get_robot_data, name='get robot data'),
+    path('telemetry/', views.get_telemetry, name='telemetry')
 ]

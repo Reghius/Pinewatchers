@@ -60,7 +60,7 @@ def get_telemetry(request):
     result = []
     for data in telemetry:
         aux = {
-            'robot': data.robot_name.pk,
+            'robot': data.robot_object.pk,
             'communication_device_name': data.communication_device_name.name,
             'humidity': data.humidity,
             'temperature': data.temperature,

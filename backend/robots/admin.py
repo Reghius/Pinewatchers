@@ -54,7 +54,7 @@ class RobotAdmin(admin.ModelAdmin):
 class LocationAdmin(admin.ModelAdmin):
     # list_select_related = ('robot_name', 'communication_device_name')
     list_display = (
-        'robot_name',
+        'robot_object',
         'communication_device_name',
         'timestamp',
         'latitude',
@@ -66,7 +66,7 @@ class LocationAdmin(admin.ModelAdmin):
 class TelemetryAdmin(admin.ModelAdmin):
     # list_select_related = ('robot_name', 'communication_device_name')
     list_display = (
-        'robot_name',
+        'robot_object',
         'communication_device_name',
         'timestamp',
         'humidity',

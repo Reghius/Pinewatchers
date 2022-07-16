@@ -38,7 +38,7 @@ class CommunicationDeviceAdmin(admin.ModelAdmin):
 
 @admin.register(Robot)
 class RobotAdmin(admin.ModelAdmin):
-    list_select_related = ('client', 'robot_type', 'communication_device_name')
+    # list_select_related = ('client', 'robot_type', 'communication_device_name')
     list_display = (
         'name',
         'owner',

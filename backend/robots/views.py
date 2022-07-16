@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from django.http import JsonResponse, HttpResponse
+from django.shortcuts import get_object_or_404
+from robots.models import Client, RobotManufacturer, RobotType, CommunicationDevice, Robot, Location, Telemetry
 
-# Create your views here.
+
+def get_robots(request):
+    temp = list(Robot.objects.values('type', 'owner'))
+    return JsonResponse(temp, safe=False)

@@ -6,3 +6,8 @@ from robots.models import Client, RobotManufacturer, RobotType, CommunicationDev
 def get_robots(request):
     temp = list(Robot.objects.values('type', 'owner'))
     return JsonResponse(temp, safe=False)
+
+
+def get_robots_data(request):
+    data = list(Robot.objects.values())
+    return JsonResponse(data, safe=False)

@@ -4,13 +4,34 @@ from robots.models import Client, RobotManufacturer, RobotType, CommunicationDev
 
 
 def get_robots(request):
-    temp = list(Robot.objects.values('type', 'owner'))
-    return JsonResponse(temp, safe=False)
+    data = Robot.objects.all()
+    result = []
+    for robot in data:
+        aux = {
+            'owner': robot.owner.name,
+            'robot_type': robot.type.robot_type
+        }
+        result.append(aux)
+
+    return JsonResponse(result, safe=False)
 
 
 def get_robots_data(request):
-    data = list(Robot.objects.values())
-    return JsonResponse(data, safe=False)
+    data = Robot.objects.all()
+    result = []
+    for robot in data:
+        aux = {
+        'name': robot.name,
+        'owner': robot.owner.name,
+        'manufacturer': robot.manufacturer,
+        'serial_number': robot.serial_number,
+        'production_date': robot.production_date,
+        'robot_type': robot.type.robot_type,
+        'communication_device_name': robot.communication_device_name.name
+        }
+        result.append(aux)
+    
+    return JsonResponse(result, safe=False)
 
 
 def get_robot_data(request, robot_id):

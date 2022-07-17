@@ -97,14 +97,14 @@ def get_latest_location(request):
     for robot in robots:
         location = Location.objects.filter(robot_object_id=robot.id).latest('timestamp')
         subresult.append(location)
-        for data in subresult:
-            aux = {
-                'robot': data.robot_object.name,
-                'timestamp': data.timestamp,
-                'communication_device_name': data.communication_device_name.name,
-                'latitude': data.latitude,
-                'longitude': data.longitude
+    for data in subresult:
+        aux = {
+            'robot': data.robot_object.name,
+            'timestamp': data.timestamp,
+            'communication_device_name': data.communication_device_name.name,
+            'latitude': data.latitude,
+            'longitude': data.longitude
             }
-            result.append(aux)
+        result.append(aux)
     print(result)
     return JsonResponse(result, safe=False)

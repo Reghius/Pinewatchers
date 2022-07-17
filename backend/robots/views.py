@@ -88,3 +88,23 @@ def get_telemetry(request):
         result.append(aux)
 
     return JsonResponse(result, safe=False)
+
+
+def get_latest_location(request):
+    robots = Robot.objects.all()
+    subresult = []
+    result = []
+    for robot in robots:
+        location = Location.objects.filter(robot_object_id=robot.id).latest('timestamp')
+        subresult.append(location)
+        for data in subresult:
+            aux = {
+                'robot': data.robot_object.name,
+                'timestamp': data.timestamp,
+                'communication_device_name': data.communication_device_name.name,
+                'latitude': data.latitude,
+                'longitude': data.longitude
+            }
+            result.append(aux)
+    print(result)
+    return JsonResponse(result, safe=False)

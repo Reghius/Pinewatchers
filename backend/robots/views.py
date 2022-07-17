@@ -51,6 +51,25 @@ def get_robot_data(request, robot_id):
     return JsonResponse(aux, safe=False)
 
 
+def get_location(request):
+    robot_id = request.GET.get('robot_id', None)
+    start_date = request.GET.get('start', None)
+    end_date = request.GET.get('end', None)
+
+    location = Location.objects.filter(robot_object_id__id=robot_id, timestamp__range=[start_date, end_date])
+    result = []
+    for data in location:
+        aux = {
+            'robot': data.robot_object.pk,
+            'communication_device_name': data.communication_device_name.name,
+            'latitude': data.latitude,
+            'longitude': data.longitude
+        }
+        result.append(aux)
+
+    return JsonResponse(result, safe=False)
+
+
 def get_telemetry(request):
     robot_id = request.GET.get('robot_id', None)
     start_date = request.GET.get('start', None)

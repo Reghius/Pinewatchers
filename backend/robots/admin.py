@@ -4,6 +4,7 @@ from .models import Client, RobotManufacturer, RobotType, CommunicationDevice, R
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
+    search_fields = ['KRS_number', 'name']
     list_filter = ('KRS_number', 'name')
     list_display = (
         'name',
@@ -18,6 +19,7 @@ class RobotTypeAdmin(admin.ModelAdmin):
 
 @admin.register(RobotManufacturer)
 class RobotManufacturerAdmin(admin.ModelAdmin):
+    search_fields = ['name', 'country_of_origin', 'HQ_location',]
     list_filter = ('country_of_origin',)
     list_display = (
         'name',
@@ -28,6 +30,7 @@ class RobotManufacturerAdmin(admin.ModelAdmin):
 
 @admin.register(CommunicationDevice)
 class CommunicationDeviceAdmin(admin.ModelAdmin):
+    search_fields = ['name',]
     list_filter = ('name',)
     list_display = (
         'name',
@@ -39,6 +42,7 @@ class CommunicationDeviceAdmin(admin.ModelAdmin):
 
 @admin.register(Robot)
 class RobotAdmin(admin.ModelAdmin):
+    search_fields = ['name', 'serial_number', 'production_date', 'communication_device_name']
     list_filter = ('owner', 'manufacturer', 'type')
     list_display = (
         'name',
@@ -53,6 +57,7 @@ class RobotAdmin(admin.ModelAdmin):
 
 @admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
+    search_fields = ['robot_object', 'communication_device_name', 'timestamp']
     list_filter = ('robot_object', 'communication_device_name')
     list_display = (
         'robot_object',
@@ -65,6 +70,7 @@ class LocationAdmin(admin.ModelAdmin):
 
 @admin.register(Telemetry)
 class TelemetryAdmin(admin.ModelAdmin):
+    search_fields = ['robot_object', 'communication_device_name', 'timestamp']
     list_filter = ('robot_object', 'communication_device_name')
     list_display = (
         'robot_object',

@@ -1,6 +1,6 @@
-from tracemalloc import start
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 from robots.models import Client, RobotManufacturer, RobotType, CommunicationDevice, Robot, Location, Telemetry
 
 
@@ -106,5 +106,17 @@ def get_latest_location(request):
             'longitude': data.longitude
             }
         result.append(aux)
-    print(result)
     return JsonResponse(result, safe=False)
+
+
+# @csrf_exempt
+def modify_robot_brand(request, robot_id):
+    robot_data = get_object_or_404(Robot, id=robot_id)
+    post_data = request.POST.get('manufacturer_id', None)
+    robot_data.manufacturer_id = post_data
+    robot_data.save()
+    aux = {
+        'manufacturer': robot_data.manufacturer.name,
+    }
+
+    return JsonResponse(aux, safe=False)

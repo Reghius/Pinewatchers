@@ -1,7 +1,7 @@
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from robots.models import Client, RobotManufacturer, RobotType, CommunicationDevice, Robot, Location, Telemetry
+from robots.models import Client, Robot, Location, Telemetry
 
 
 def get_robots(request):
@@ -116,9 +116,13 @@ def modify_robot_brand(request, robot_id):
     robot_data.manufacturer_id = post_data
     robot_data.save()
 
+    return HttpResponse(status=200)
+
 
 def add_new_client(request):
     client_name = request.POST['name']
     krs_number = request.POST['KRS_number']
     client = Client.objects.create(name=client_name, KRS_number=krs_number)
     client.save()
+
+    return HttpResponse(status=200)

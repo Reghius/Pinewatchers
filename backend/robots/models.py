@@ -34,7 +34,6 @@ class RobotManufacturer(models.Model):
     name = models.CharField(max_length=20)
     country_of_origin = models.CharField(max_length=20)
     HQ_location = models.CharField(max_length=20)
-    robot_types = models.CharField(max_length=20, choices=RobotType.ROBOT_TYPE_CHOICE)
 
     def __str__(self):
         return f'{self.name}'

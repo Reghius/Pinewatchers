@@ -10,5 +10,6 @@ urlpatterns = [
     path('location/', views.get_location, name='location'),
     path('telemetry/', views.get_telemetry, name='telemetry'),
     path('lastlocation/', views.get_latest_location, name='latest location'),
-    path('modify/<int:robot_id>', views.modify_robot_brand, name='modify robot model')
+    path('modify/<int:robot_id>', views.modify_robot_brand, name='modify robot model'),
+    path('client/', views.add_new_client, name='add new client')
 ]

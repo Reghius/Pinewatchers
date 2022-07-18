@@ -115,8 +115,10 @@ def modify_robot_brand(request, robot_id):
     post_data = request.POST.get('manufacturer_id', None)
     robot_data.manufacturer_id = post_data
     robot_data.save()
-    aux = {
-        'manufacturer': robot_data.manufacturer.name,
-    }
 
-    return JsonResponse(aux, safe=False)
+
+def add_new_client(request):
+    client_name = request.POST['name']
+    krs_number = request.POST['KRS_number']
+    client = Client.objects.create(name=client_name, KRS_number=krs_number)
+    client.save()

@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import ChoiceField
 
 
 class Client(models.Model):
@@ -14,20 +15,21 @@ class Client(models.Model):
 
 
 class RobotType(models.Model):
-    WHEELER = '4WEELER'
-    AMPHIBIAN = 'AMPHIBIAN'
-    TRACKED = 'TRACKED'
-    FLYING = 'FLYING'
-    ROBOT_TYPE_CHOICE = [
-        (WHEELER, '4 wheeler'),
-        (AMPHIBIAN, 'Amphibian'),
-        (TRACKED, 'Tracked'),
-        (FLYING, 'Flying'),
-    ]
+    class ChoiceField():
+        WHEELER = '4WEELER'
+        AMPHIBIAN = 'AMPHIBIAN'
+        TRACKED = 'TRACKED'
+        FLYING = 'FLYING'
+        ROBOT_TYPE_CHOICE = [
+            (WHEELER, '4 wheeler'),
+            (AMPHIBIAN, 'Amphibian'),
+            (TRACKED, 'Tracked'),
+            (FLYING, 'Flying'),
+        ]
     robot_type = models.CharField(
         max_length=20,
-        choices=ROBOT_TYPE_CHOICE,
-        default=WHEELER,
+        choices=ChoiceField.ROBOT_TYPE_CHOICE,
+        default='default',
     )
 
     def __str__(self):

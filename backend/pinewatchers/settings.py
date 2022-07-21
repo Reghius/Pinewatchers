@@ -128,6 +128,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_BACKEND')
 # CSRF_TRUSTED_ORIGINS = ['http://localhost:8000']
 # CSRF_COOKIE_SECURE = True
 # CORS_ALLOWED_ORIGINS = ['http://localhost:8000']

@@ -32,7 +32,16 @@ services:
       - 6379:6379
     command: redis-server --save 20 1 --loglevel warning
     volumes:
-    - cache:/data
+      - cache:/data
+  
+  celery:
+    build: ./backend
+    container_name: celery
+    command: sh -c 'celery -A pinewatchers worker -l info'
+    volumes:
+      - ./backend:/code
+    env_file:
+      - .env
   
   consumer:
     image: backend-image

@@ -1,3 +1,5 @@
+from re import S
+import ssl
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
@@ -109,7 +111,6 @@ def get_latest_location(request):
     return JsonResponse(result, safe=False)
 
 
-# @csrf_exempt
 def modify_robot_brand(request, robot_id):
     robot_data = get_object_or_404(Robot, id=robot_id)
     post_data = request.POST.get('manufacturer_id', None)

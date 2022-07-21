@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Client(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=50)
     KRS_number = models.CharField(max_length=10)
 
     def __str__(self):
@@ -31,16 +31,16 @@ class RobotType(models.Model):
 
 
 class RobotManufacturer(models.Model):
-    name = models.CharField(max_length=20)
-    country_of_origin = models.CharField(max_length=20)
-    HQ_location = models.CharField(max_length=20)
+    name = models.CharField(max_length=50)
+    country_of_origin = models.CharField(max_length=60)
+    HQ_location = models.CharField(max_length=60)
 
     def __str__(self):
         return f'{self.name}'
 
 
 class CommunicationDevice(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=50)
     x_size = models.FloatField()
     y_size = models.FloatField()
     z_size = models.FloatField()
@@ -50,10 +50,10 @@ class CommunicationDevice(models.Model):
 
 
 class Robot(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=50)
     owner = models.ForeignKey(Client, on_delete=models.CASCADE)
     manufacturer = models.ForeignKey(RobotManufacturer, on_delete=models.CASCADE)
-    serial_number = models.CharField(max_length=20)
+    serial_number = models.CharField(max_length=50)
     production_date = models.DateField()
     type = models.ForeignKey(RobotType, on_delete=models.CASCADE)
     communication_device_name = models.ForeignKey(CommunicationDevice, on_delete=models.CASCADE)

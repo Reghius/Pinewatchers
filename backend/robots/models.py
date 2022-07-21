@@ -4,6 +4,10 @@ from django.db import models
 class Client(models.Model):
     name = models.CharField(max_length=50)
     KRS_number = models.CharField(max_length=10)
+    City = models.CharField(max_length=30)
+    Street = models.CharField(max_length=50)
+    Street_number = models.CharField(max_length=10)
+    Phone_numer = models.CharField(max_length=12)
 
     def __str__(self):
         return f'{self.name}'

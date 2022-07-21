@@ -33,7 +33,7 @@ class RobotType(models.Model):
 class RobotManufacturer(models.Model):
     name = models.CharField(max_length=50)
     country_of_origin = models.CharField(max_length=60)
-    HQ_location = models.CharField(max_length=60)
+    hq_location = models.CharField(max_length=60)
 
     def __str__(self):
         return f'{self.name}'

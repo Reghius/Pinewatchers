@@ -24,7 +24,7 @@ class RobotManufacturerAdmin(admin.ModelAdmin):
     list_display = (
         'name',
         'country_of_origin',
-        'HQ_location',
+        'hq_location',
     )
 
 

@@ -19,7 +19,7 @@ class RobotTypeAdmin(admin.ModelAdmin):
 
 @admin.register(RobotManufacturer)
 class RobotManufacturerAdmin(admin.ModelAdmin):
-    search_fields = ['name', 'country_of_origin', 'HQ_location',]
+    search_fields = ['name', 'country_of_origin', 'hq_location',]
     list_filter = ('country_of_origin',)
     list_display = (
         'name',
@@ -42,7 +42,7 @@ class CommunicationDeviceAdmin(admin.ModelAdmin):
 
 @admin.register(Robot)
 class RobotAdmin(admin.ModelAdmin):
-    search_fields = ['name', 'serial_number', 'production_date', 'communication_device_name']
+    search_fields = ['name', 'serial_number', 'production_date', 'communication_device']
     list_filter = ('owner', 'manufacturer', 'type')
     list_display = (
         'name',
@@ -51,17 +51,17 @@ class RobotAdmin(admin.ModelAdmin):
         'serial_number',
         'production_date',
         'type',
-        'communication_device_name'
+        'communication_device'
     )
 
 
 @admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
-    search_fields = ['robot_object', 'communication_device_name', 'timestamp']
-    list_filter = ('robot_object', 'communication_device_name')
+    search_fields = ['robot_object', 'communication_device', 'timestamp']
+    list_filter = ('robot_object', 'communication_device')
     list_display = (
         'robot_object',
-        'communication_device_name',
+        'communication_device',
         'timestamp',
         'latitude',
         'longitude'
@@ -70,11 +70,11 @@ class LocationAdmin(admin.ModelAdmin):
 
 @admin.register(Telemetry)
 class TelemetryAdmin(admin.ModelAdmin):
-    search_fields = ['robot_object', 'communication_device_name', 'timestamp']
-    list_filter = ('robot_object', 'communication_device_name')
+    search_fields = ['robot_object', 'communication_device', 'timestamp']
+    list_filter = ('robot_object', 'communication_device')
     list_display = (
         'robot_object',
-        'communication_device_name',
+        'communication_device',
         'timestamp',
         'humidity',
         'temperature',

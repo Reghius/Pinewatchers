@@ -56,7 +56,7 @@ class Robot(models.Model):
     serial_number = models.CharField(max_length=50)
     production_date = models.DateField()
     type = models.ForeignKey(RobotType, on_delete=models.CASCADE)
-    communication_device_name = models.ForeignKey(CommunicationDevice, on_delete=models.CASCADE)
+    communication_device = models.ForeignKey(CommunicationDevice, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.name}'
@@ -64,7 +64,7 @@ class Robot(models.Model):
 
 class Location(models.Model):
     robot_object = models.ForeignKey(Robot, on_delete=models.CASCADE)
-    communication_device_name = models.ForeignKey(CommunicationDevice, on_delete=models.CASCADE)
+    communication_device = models.ForeignKey(CommunicationDevice, on_delete=models.CASCADE)
     timestamp = models.DateTimeField()
     latitude = models.FloatField()
     longitude = models.FloatField()
@@ -72,7 +72,7 @@ class Location(models.Model):
 
 class Telemetry(models.Model):
     robot_object = models.ForeignKey(Robot, on_delete=models.CASCADE)
-    communication_device_name = models.ForeignKey(CommunicationDevice, on_delete=models.CASCADE)
+    communication_device = models.ForeignKey(CommunicationDevice, on_delete=models.CASCADE)
     timestamp = models.DateTimeField()
     humidity = models.FloatField()
     temperature = models.FloatField()

@@ -25,5 +25,19 @@ def process_location(robot_name, sensor_nr, location_str):
 
 
 @shared_task
-def process_telemetry():
-    pass
+def process_telemetry(robot_name, sensor_nr, telemetry_str):
+    timestamp = datetime.fromtimestamp(struct.unpack('>d', bytearray.fromhex(telemetry_str[:16]))[0])
+    humidity = int(telemetry_str[16:18], 16)
+    temperature = int(telemetry_str[18:20], 16)
+    pressure = int(telemetry_str[20:24], 16)
+    robot = Robot.objects.get(name=robot_name)
+    sensor = CommunicationDevice.objects.get(name=sensor_nr)
+
+    Telemetry.objects.create(
+        robot_object = robot,
+        communication_device = sensor,
+        timestamp=timestamp,
+        humidity=humidity,
+        temperature=temperature,
+        pressure=pressure
+    )

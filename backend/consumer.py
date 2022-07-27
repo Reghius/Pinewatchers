@@ -19,5 +19,5 @@ client.on_connect = on_connect
 client.on_message = on_message
 
 client.username_pw_set(username=os.environ.get('MQTT_LOGIN'), password=os.environ.get('MQTT_PASSWORD'))
-client.connect(os.environ.get('MQTT_IP'), os.environ.get('MQTT_PORT'), 60)
+client.connect(host=os.environ.get('MQTT_IP'), port=os.environ.get('MQTT_PORT'), keepalive=60)
 client.loop_forever()

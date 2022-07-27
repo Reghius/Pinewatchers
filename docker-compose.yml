@@ -51,6 +51,8 @@ services:
     image: backend-image
     container_name: consumer
     command: python3 consumer.py
+    env_file:
+      - .env
     depends_on:
       - redis
 

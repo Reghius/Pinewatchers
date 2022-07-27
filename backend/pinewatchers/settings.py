@@ -88,6 +88,14 @@ DATABASES = {
 }
 
 
+MQTT = {
+    'HOST': os.environ.get('MQTT_IP'),
+    'PORT': int(os.environ.get('MQTT_PORT')),
+    'LOGIN': os.environ.get('MQTT_LOGIN'),
+    'PASSWORD': os.environ.get('MQTT_PASSWORD')
+}
+
+
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 

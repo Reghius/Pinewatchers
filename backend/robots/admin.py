@@ -57,10 +57,9 @@ class RobotAdmin(admin.ModelAdmin):
 
 @admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
-    search_fields = ['robot_object', 'communication_device', 'timestamp']
-    list_filter = ('robot_object', 'communication_device')
+    search_fields = ['communication_device', 'timestamp']
+    list_filter = ('communication_device',)
     list_display = (
-        'robot_object',
         'communication_device',
         'timestamp',
         'latitude',
@@ -70,10 +69,9 @@ class LocationAdmin(admin.ModelAdmin):
 
 @admin.register(Telemetry)
 class TelemetryAdmin(admin.ModelAdmin):
-    search_fields = ['robot_object', 'communication_device', 'timestamp']
-    list_filter = ('robot_object', 'communication_device')
+    search_fields = ['communication_device', 'timestamp']
+    list_filter = ('communication_device',)
     list_display = (
-        'robot_object',
         'communication_device',
         'timestamp',
         'humidity',

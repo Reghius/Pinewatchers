@@ -72,16 +72,15 @@ def get_location(request):
 
 
 def get_telemetry(request):
-    robot_id = request.GET.get('robot_id', None)
+    sensor_id = request.GET.get('sensor_id', None)
     start_date = request.GET.get('start', None)
     end_date = request.GET.get('end', None)
 
-    telemetry = Telemetry.objects.filter(robot_object_id__id=robot_id, timestamp__range=[start_date, end_date])
+    telemetry = Telemetry.objects.filter(communication_device_id=sensor_id, timestamp__range=[start_date, end_date])
     result = []
     for data in telemetry:
         aux = {
-            'robot': data.robot_object.pk,
-            'communication_device_name': data.communication_device_name.name,
+            'communication_device_name': data.communication_device.name,
             'humidity': data.humidity,
             'temperature': data.temperature,
             'pressure': data.pressure

@@ -1,9 +1,8 @@
-from re import S
-import ssl
+from django import http
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from robots.models import Client, Robot, Location, Telemetry
+from robots.models import Client, Robot, Location, Telemetry, CommunicationDevice
 
 
 def get_robots(request):
@@ -91,20 +90,19 @@ def get_telemetry(request):
 
 
 def get_latest_location(request):
-    robots = Robot.objects.all()
-    subresult = []
+    com_devices = CommunicationDevice.objects.all()
     result = []
-    for robot in robots:
-        location = Location.objects.filter(robot_object_id=robot.id).latest('timestamp')
+    subresult = []
+    for devices in com_devices:
+        location = Location.objects.filter(communication_device_id=devices).latest('timestamp')
         subresult.append(location)
     for data in subresult:
         aux = {
-            'robot': data.robot_object.name,
+            'communication_device': data.communication_device.name,
             'timestamp': data.timestamp,
-            'communication_device_name': data.communication_device_name.name,
             'latitude': data.latitude,
             'longitude': data.longitude
-            }
+        }
         result.append(aux)
     return JsonResponse(result, safe=False)
 

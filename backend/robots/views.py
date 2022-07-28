@@ -90,12 +90,13 @@ def get_telemetry(request):
 
 
 def get_latest_location(request):
-    com_devices = CommunicationDevice.objects.all()
+    subresult = [Location.objects.filter(communication_device_id=devices).latest('timestamp') for devices in CommunicationDevice.objects.all()]
     result = []
-    subresult = []
-    for devices in com_devices:
-        location = Location.objects.filter(communication_device_id=devices).latest('timestamp')
-        subresult.append(location)
+    # com_devices = CommunicationDevice.objects.all()
+    # subresult = []
+    # for devices in com_devices:
+    #     location = Location.objects.filter(communication_device_id=devices).latest('timestamp')
+    #     subresult.append(location)
     for data in subresult:
         aux = {
             'communication_device': data.communication_device.name,

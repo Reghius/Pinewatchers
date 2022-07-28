@@ -36,7 +36,8 @@ class CommunicationDeviceAdmin(admin.ModelAdmin):
         'name',
         'x_size',
         'y_size',
-        'z_size'
+        'z_size',
+        'is_faulty'
     )
 
 

@@ -50,6 +50,7 @@ class CommunicationDevice(models.Model):
     x_size = models.FloatField()
     y_size = models.FloatField()
     z_size = models.FloatField()
+    is_faulty = models.BooleanField()
 
     def __str__(self):
         return f'{self.name}'

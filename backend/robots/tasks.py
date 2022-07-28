@@ -12,7 +12,10 @@ def process_location(sensor_name, location_str):
     timestamp = datetime.fromtimestamp(struct.unpack('>d', bytearray.fromhex(seperated_location[0]))[0])
     latitude = struct.unpack('>d', bytearray.fromhex(seperated_location[1]))[0]
     longitude = struct.unpack('>d', bytearray.fromhex(seperated_location[2]))[0]
-    sensor = CommunicationDevice.objects.get(name=sensor_name)
+    try:
+        sensor = CommunicationDevice.objects.get(name=sensor_name)
+    except:
+        pass
 
     Location.objects.create(
         communication_device = sensor,
@@ -28,7 +31,10 @@ def process_telemetry(sensor_name, telemetry_str):
     humidity = int(telemetry_str[16:18], 16)
     temperature = int(telemetry_str[18:20], 16)
     pressure = int(telemetry_str[20:24], 16)
-    sensor = CommunicationDevice.objects.get(name=sensor_name)
+    try:
+        sensor = CommunicationDevice.objects.get(name=sensor_name)
+    except:
+        pass
 
     Telemetry.objects.create(
         communication_device = sensor,
@@ -37,3 +43,22 @@ def process_telemetry(sensor_name, telemetry_str):
         temperature=temperature,
         pressure=pressure
     )
+
+
+@shared_task
+def process_sensor_fault(sensor_name, fault_str):
+    fault = fault_str
+
+    try:
+        sensor = CommunicationDevice.objects.get(name=sensor_name)
+    except:
+        pass
+
+    if fault == 'fault_detected':
+        sensor.is_faulty = True
+        sensor.save()
+    elif fault == 'fault_recovered':
+        sensor.is_faulty = False
+        sensor.save()
+    else:
+        pass

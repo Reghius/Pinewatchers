@@ -1,5 +1,5 @@
 from time import time
-from robots.models import Telemetry, Location, Robot, CommunicationDevice
+from robots.models import Telemetry, Location, CommunicationDevice
 import textwrap
 from datetime import datetime
 import struct

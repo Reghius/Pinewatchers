@@ -9,9 +9,9 @@ from celery import shared_task
 @shared_task
 def process_location(sensor_name, location_str):
     seperated_location = textwrap.wrap(location_str, 16)
-    timestamp = datetime.fromtimestamp(struct.unpack('>d', bytearray.fromhex(seperated_location[0])))
-    latitude = struct.unpack('>d', bytearray.fromhex(seperated_location[1]))
-    longitude = struct.unpack('>d', bytearray.fromhex(seperated_location[2]))
+    timestamp = datetime.fromtimestamp(struct.unpack('>d', bytearray.fromhex(seperated_location[0]))[0])
+    latitude = struct.unpack('>d', bytearray.fromhex(seperated_location[1]))[0]
+    longitude = struct.unpack('>d', bytearray.fromhex(seperated_location[2]))[0]
     sensor = CommunicationDevice.objects.get(name=sensor_name)
 
     Location.objects.create(

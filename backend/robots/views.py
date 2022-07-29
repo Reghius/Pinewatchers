@@ -90,14 +90,17 @@ def get_telemetry(request):
 
 def get_latest_location(request):
     result = []
-    for aux in CommunicationDevice.objects.all():
-        data = aux.location_set.latest('timestamp')
-        result.append({
-            'communication_device': data.communication_device.name,
-            'timestamp': data.timestamp,
-            'latitude': data.latitude,
-            'longitude': data.longitude
-        })
+    try:
+        for aux in CommunicationDevice.objects.all():
+            data = aux.location_set.latest('timestamp')
+            result.append({
+                'communication_device': data.communication_device.name,
+                'timestamp': data.timestamp,
+                'latitude': data.latitude,
+                'longitude': data.longitude
+            })
+    except:
+        pass
     return JsonResponse(result, safe=False)
 
 

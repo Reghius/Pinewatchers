@@ -89,21 +89,15 @@ def get_telemetry(request):
 
 
 def get_latest_location(request):
-    try:
-        subresult = [Location.objects.filter(communication_device_id=devices).latest('timestamp') for devices in CommunicationDevice.objects.all()]
-    except:
-        pass
     result = []
-    for data in subresult:
-        aux = {
+    for aux in CommunicationDevice.objects.all():
+        data = aux.location_set.latest('timestamp')
+        result.append({
             'communication_device': data.communication_device.name,
             'timestamp': data.timestamp,
             'latitude': data.latitude,
             'longitude': data.longitude
-        }
-        result.append(aux)
-    # if len(result) <= 4:
-    #     return 'No data for the sensor'
+        })
     return JsonResponse(result, safe=False)
 
 

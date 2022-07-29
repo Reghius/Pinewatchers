@@ -1,8 +1,7 @@
-from django import http
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from robots.models import Client, Robot, Location, Telemetry, CommunicationDevice
+from robots.models import Client, Robot, Location, Telemetry, CommunicationDevice, RobotManufacturer
 
 
 def get_robots(request):
@@ -90,13 +89,11 @@ def get_telemetry(request):
 
 
 def get_latest_location(request):
-    subresult = [Location.objects.filter(communication_device_id=devices).latest('timestamp') for devices in CommunicationDevice.objects.all()]
+    try:
+        subresult = [Location.objects.filter(communication_device_id=devices).latest('timestamp') for devices in CommunicationDevice.objects.all()]
+    except:
+        pass
     result = []
-    # com_devices = CommunicationDevice.objects.all()
-    # subresult = []
-    # for devices in com_devices:
-    #     location = Location.objects.filter(communication_device_id=devices).latest('timestamp')
-    #     subresult.append(location)
     for data in subresult:
         aux = {
             'communication_device': data.communication_device.name,
@@ -105,16 +102,20 @@ def get_latest_location(request):
             'longitude': data.longitude
         }
         result.append(aux)
+    # if len(result) <= 4:
+    #     return 'No data for the sensor'
     return JsonResponse(result, safe=False)
 
 
 def modify_robot_brand(request, robot_id):
     robot_data = get_object_or_404(Robot, id=robot_id)
     post_data = request.POST.get('manufacturer_id', None)
-    robot_data.manufacturer_id = post_data
-    robot_data.save()
-
-    return HttpResponse(status=200)
+    if post_data.isnumeric() == True and len(post_data)>0 and RobotManufacturer.objects.filter(pk=post_data).exists():
+        robot_data.manufacturer_id = post_data
+        robot_data.save()
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse('Wrong value')
 
 
 def add_new_client(request):

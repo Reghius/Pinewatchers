@@ -121,7 +121,9 @@ def modify_robot_brand(request, robot_id):
 def add_new_client(request):
     client_name = request.POST['name']
     krs_number = request.POST['KRS_number']
-    client = Client.objects.create(name=client_name, KRS_number=krs_number)
-    client.save()
-
-    return HttpResponse(status=200)
+    if len(client_name)>0 and len(client_name)<50 and len(krs_number) == 10 and krs_number.isnumeric() == True:
+        client = Client.objects.create(name=client_name, KRS_number=krs_number)
+        client.save()
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse('Name has to have at least one and no more then 50 signs. KRS has to have 10 numbers')

@@ -1,6 +1,7 @@
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ObjectDoesNotExist
 from robots.models import Client, Robot, Location, Telemetry, CommunicationDevice, RobotManufacturer
 
 
@@ -90,8 +91,8 @@ def get_telemetry(request):
 
 def get_latest_location(request):
     result = []
-    try:
-        for aux in CommunicationDevice.objects.all():
+    for aux in CommunicationDevice.objects.all():
+        try:
             data = aux.location_set.latest('timestamp')
             result.append({
                 'communication_device': data.communication_device.name,
@@ -99,8 +100,14 @@ def get_latest_location(request):
                 'latitude': data.latitude,
                 'longitude': data.longitude
             })
-    except:
-        pass
+        except Location.DoesNotExist:
+            result.append({
+                'communication_device': aux.name,
+                'timestamp': 'No data',
+                'latitude': 'No data',
+                'longitude': 'No data'
+            })
+
     return JsonResponse(result, safe=False)
 
 

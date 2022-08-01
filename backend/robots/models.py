@@ -4,11 +4,11 @@ from django.forms import ChoiceField
 
 class Client(models.Model):
     name = models.CharField(max_length=50)
-    KRS_number = models.CharField(max_length=10)
-    City = models.CharField(max_length=30)
-    Street = models.CharField(max_length=50)
-    Street_number = models.CharField(max_length=10)
-    Phone_numer = models.CharField(max_length=12)
+    krs_number = models.CharField(max_length=10)
+    city = models.CharField(max_length=30, blank=True)
+    street = models.CharField(max_length=50, blank=True)
+    street_number = models.CharField(max_length=10, blank=True)
+    phone_numer = models.CharField(max_length=12, blank=True)
 
     def __str__(self):
         return f'{self.name}'

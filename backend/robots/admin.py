@@ -4,11 +4,11 @@ from .models import Client, RobotManufacturer, RobotType, CommunicationDevice, R
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
-    search_fields = ['KRS_number', 'name']
-    list_filter = ('KRS_number', 'name')
+    search_fields = ['krs_number', 'name']
+    list_filter = ('krs_number', 'name')
     list_display = (
         'name',
-        'KRS_number'
+        'krs_number'
     )
 
 

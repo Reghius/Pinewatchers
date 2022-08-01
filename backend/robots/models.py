@@ -3,12 +3,12 @@ from django.forms import ChoiceField
 
 
 class Client(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=200)
     krs_number = models.CharField(max_length=10)
-    city = models.CharField(max_length=30, blank=True)
-    street = models.CharField(max_length=50, blank=True)
-    street_number = models.CharField(max_length=10, blank=True)
-    phone_numer = models.CharField(max_length=12, blank=True)
+    city = models.CharField(max_length=100, blank=True)
+    street = models.CharField(max_length=100, blank=True)
+    street_number = models.CharField(max_length=100, blank=True)
+    phone_numer = models.CharField(max_length=20, blank=True)
 
     def __str__(self):
         return f'{self.name}'
@@ -37,16 +37,16 @@ class RobotType(models.Model):
 
 
 class RobotManufacturer(models.Model):
-    name = models.CharField(max_length=50)
-    country_of_origin = models.CharField(max_length=60)
-    hq_location = models.CharField(max_length=60)
+    name = models.CharField(max_length=200)
+    country_of_origin = models.CharField(max_length=100)
+    hq_location = models.CharField(max_length=200)
 
     def __str__(self):
         return f'{self.name}'
 
 
 class CommunicationDevice(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
     x_size = models.FloatField()
     y_size = models.FloatField()
     z_size = models.FloatField()
@@ -57,10 +57,10 @@ class CommunicationDevice(models.Model):
 
 
 class Robot(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=200)
     owner = models.ForeignKey(Client, on_delete=models.CASCADE)
     manufacturer = models.ForeignKey(RobotManufacturer, on_delete=models.CASCADE)
-    serial_number = models.CharField(max_length=50)
+    serial_number = models.CharField(max_length=200)
     production_date = models.DateField()
     type = models.ForeignKey(RobotType, on_delete=models.CASCADE)
     communication_device = models.ForeignKey(CommunicationDevice, on_delete=models.CASCADE)

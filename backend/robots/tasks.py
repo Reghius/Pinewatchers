@@ -1,4 +1,4 @@
-from robots.models import Telemetry, Location, CommunicationDevice
+from robots.models import Telemetry, Location, CommunicationDevice, Robot
 import textwrap
 from datetime import datetime
 import struct
@@ -12,10 +12,10 @@ def process_location(sensor_name, location_str):
     latitude = struct.unpack('>d', bytearray.fromhex(seperated_location[1]))[0]
     longitude = struct.unpack('>d', bytearray.fromhex(seperated_location[2]))[0]
     try:
-        sensor = CommunicationDevice.objects.get(name=sensor_name)
+        robot = Robot.objects.get(communication_device__name=sensor_name)
 
         Location.objects.create(
-        communication_device = sensor,
+        robot_name = robot,
         timestamp = timestamp,
         latitude = latitude,
         longitude = longitude
@@ -31,10 +31,10 @@ def process_telemetry(sensor_name, telemetry_str):
     temperature = int(telemetry_str[18:20], 16)
     pressure = int(telemetry_str[20:24], 16)
     try:
-        sensor = CommunicationDevice.objects.get(name=sensor_name)
+        robot = Robot.objects.get(communication_device__name=sensor_name)
 
         Telemetry.objects.create(
-        communication_device = sensor,
+        robot_name = robot,
         timestamp=timestamp,
         humidity=humidity,
         temperature=temperature,

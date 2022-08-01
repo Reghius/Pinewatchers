@@ -91,18 +91,18 @@ def get_telemetry(request):
 
 def get_latest_location(request):
     result = []
-    for aux in CommunicationDevice.objects.all():
+    for aux in Robot.objects.all():
         try:
             data = aux.location_set.latest('timestamp')
             result.append({
-                'communication_device': data.communication_device.name,
+                'robot_name': data.robot_name.name,
                 'timestamp': data.timestamp,
                 'latitude': data.latitude,
                 'longitude': data.longitude
             })
         except Location.DoesNotExist:
             result.append({
-                'communication_device': aux.name,
+                'robot_name': aux.name,
                 'timestamp': 'No data',
                 'latitude': 'No data',
                 'longitude': 'No data'

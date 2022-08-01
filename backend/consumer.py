@@ -17,15 +17,6 @@ def on_connect(client, *args):
 def on_message(client, userdata, msg):
     aux_topic = msg.topic.split('/')
     aux_payload = ast.literal_eval(msg.payload.decode('ascii'))
-    # try:
-    #     dict_data = aux_payload['data']
-    # except KeyError:
-    #     pass
-    
-    # try:
-    #     fault_data = aux_payload['info']
-    # except KeyError:
-    #     pass
     dict_data = aux_payload.get('data', None)
     fault_data = aux_payload.get('info', None)
     sensor_name = aux_topic[1]

@@ -4,6 +4,7 @@ from datetime import datetime
 import struct
 from celery import shared_task
 
+
 @shared_task
 def process_location(sensor_name, location_str):
     seperated_location = textwrap.wrap(location_str, 16)
@@ -21,6 +22,7 @@ def process_location(sensor_name, location_str):
     )
     except:
         pass
+
 
 @shared_task
 def process_telemetry(sensor_name, telemetry_str):
@@ -40,21 +42,3 @@ def process_telemetry(sensor_name, telemetry_str):
     )
     except:
         pass
-
-
-# def process_sensor_fault(sensor_name, fault_str):
-#     fault = fault_str
-
-#     try:
-#         sensor = CommunicationDevice.objects.get(name=sensor_name)
-
-#         if fault == 'fault_detected':
-#             sensor.is_faulty = True
-#             sensor.save()
-#         elif fault == 'fault_recovered':
-#             sensor.is_faulty = False
-#             sensor.save()
-#         else:
-#             pass
-#     except:
-#         pass

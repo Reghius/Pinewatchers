@@ -18,7 +18,6 @@ def on_message(client, userdata, msg):
     aux_topic = msg.topic.split('/')
     aux_payload = ast.literal_eval(msg.payload.decode('ascii'))
     dict_data = aux_payload['data']
-    # fault_data = aux_payload.get('info', None)
     sensor_name = aux_topic[1]
 
     if aux_topic[2] == 'location':

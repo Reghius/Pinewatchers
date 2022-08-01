@@ -6,7 +6,6 @@ import struct
 from celery import shared_task
 
 
-@shared_task
 def process_location(sensor_name, location_str):
     seperated_location = textwrap.wrap(location_str, 16)
     timestamp = datetime.fromtimestamp(struct.unpack('>d', bytearray.fromhex(seperated_location[0]))[0])
@@ -25,7 +24,6 @@ def process_location(sensor_name, location_str):
         pass
 
 
-@shared_task
 def process_telemetry(sensor_name, telemetry_str):
     timestamp = datetime.fromtimestamp(struct.unpack('>d', bytearray.fromhex(telemetry_str[:16]))[0])
     humidity = int(telemetry_str[16:18], 16)
@@ -45,7 +43,6 @@ def process_telemetry(sensor_name, telemetry_str):
         pass
 
 
-@shared_task
 def process_sensor_fault(sensor_name, fault_str):
     fault = fault_str
 

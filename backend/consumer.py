@@ -7,7 +7,7 @@ import paho.mqtt.client as mqtt
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pinewatchers.settings')
 django.setup()
 
-from robots.tasks import process_location, process_telemetry, process_sensor_fault
+from robots.tasks import process_location, process_telemetry
 
 
 def on_connect(client, *args):
@@ -17,16 +17,14 @@ def on_connect(client, *args):
 def on_message(client, userdata, msg):
     aux_topic = msg.topic.split('/')
     aux_payload = ast.literal_eval(msg.payload.decode('ascii'))
-    dict_data = aux_payload.get('data', None)
-    fault_data = aux_payload.get('info', None)
+    dict_data = aux_payload['data']
+    # fault_data = aux_payload.get('info', None)
     sensor_name = aux_topic[1]
 
     if aux_topic[2] == 'location':
         process_location.delay(sensor_name, dict_data)
     elif aux_topic[2] == 'telemetry':
         process_telemetry.delay(sensor_name, dict_data)
-    elif aux_topic[2] == 'fault_log':
-        process_sensor_fault.delay(sensor_name, fault_data)
     else:
         raise NotImplementedError('Unsupported message type.')
 

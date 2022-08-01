@@ -1,11 +1,10 @@
-from time import time
 from robots.models import Telemetry, Location, CommunicationDevice
 import textwrap
 from datetime import datetime
 import struct
 from celery import shared_task
 
-
+@shared_task
 def process_location(sensor_name, location_str):
     seperated_location = textwrap.wrap(location_str, 16)
     timestamp = datetime.fromtimestamp(struct.unpack('>d', bytearray.fromhex(seperated_location[0]))[0])
@@ -23,7 +22,7 @@ def process_location(sensor_name, location_str):
     except:
         pass
 
-
+@shared_task
 def process_telemetry(sensor_name, telemetry_str):
     timestamp = datetime.fromtimestamp(struct.unpack('>d', bytearray.fromhex(telemetry_str[:16]))[0])
     humidity = int(telemetry_str[16:18], 16)
@@ -43,19 +42,19 @@ def process_telemetry(sensor_name, telemetry_str):
         pass
 
 
-def process_sensor_fault(sensor_name, fault_str):
-    fault = fault_str
+# def process_sensor_fault(sensor_name, fault_str):
+#     fault = fault_str
 
-    try:
-        sensor = CommunicationDevice.objects.get(name=sensor_name)
+#     try:
+#         sensor = CommunicationDevice.objects.get(name=sensor_name)
 
-        if fault == 'fault_detected':
-            sensor.is_faulty = True
-            sensor.save()
-        elif fault == 'fault_recovered':
-            sensor.is_faulty = False
-            sensor.save()
-        else:
-            pass
-    except:
-        pass
+#         if fault == 'fault_detected':
+#             sensor.is_faulty = True
+#             sensor.save()
+#         elif fault == 'fault_recovered':
+#             sensor.is_faulty = False
+#             sensor.save()
+#         else:
+#             pass
+#     except:
+#         pass

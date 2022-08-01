@@ -69,14 +69,14 @@ class Robot(models.Model):
 
 
 class Location(models.Model):
-    communication_device = models.ForeignKey(CommunicationDevice, on_delete=models.CASCADE)
+    robot_name = models.ForeignKey(Robot, on_delete=models.CASCADE)
     timestamp = models.DateTimeField()
     latitude = models.FloatField()
     longitude = models.FloatField()
 
 
 class Telemetry(models.Model):
-    communication_device = models.ForeignKey(CommunicationDevice, on_delete=models.CASCADE)
+    robot_name = models.ForeignKey(Robot, on_delete=models.CASCADE)
     timestamp = models.DateTimeField()
     humidity = models.FloatField()
     temperature = models.FloatField()

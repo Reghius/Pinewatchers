@@ -16,19 +16,19 @@ class Client(models.Model):
 
 class RobotType(models.Model):
     class ChoiceField():
-        WHEELER = '4WEELER'
-        AMPHIBIAN = 'AMPHIBIAN'
-        TRACKED = 'TRACKED'
-        FLYING = 'FLYING'
-        ROBOT_TYPE_CHOICE = [
-            (WHEELER, '4 wheeler'),
-            (AMPHIBIAN, 'Amphibian'),
-            (TRACKED, 'Tracked'),
-            (FLYING, 'Flying'),
+        wheeler = '4wheeler'
+        amphibian = 'amphibian'
+        tracked = 'tracked'
+        flying = 'flying'
+        robot_type_choice = [
+            (wheeler, '4 wheeler'),
+            (amphibian, 'amphibian'),
+            (tracked, 'tracked'),
+            (flying, 'flying'),
         ]
     robot_type = models.CharField(
         max_length=20,
-        choices=ChoiceField.ROBOT_TYPE_CHOICE,
+        choices=ChoiceField.robot_type_choice,
         default='default',
     )
 

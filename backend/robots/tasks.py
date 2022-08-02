@@ -2,7 +2,7 @@ from robots.models import Telemetry, Location, CommunicationDevice, Robot
 import textwrap
 from datetime import datetime
 import struct
-from django.core.exceptions import FieldError
+from django.core.exceptions import FieldError, ObjectDoesNotExist
 from celery import shared_task
 
 
@@ -23,7 +23,8 @@ def process_location(sensor_name, location_str):
     )
     except FieldError:
         pass
-
+    except ObjectDoesNotExist:
+        pass
 
 @shared_task
 def process_telemetry(sensor_name, telemetry_str):
@@ -42,4 +43,6 @@ def process_telemetry(sensor_name, telemetry_str):
         pressure=pressure
     )
     except FieldError:
+        pass
+    except ObjectDoesNotExist:
         pass

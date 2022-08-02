@@ -62,7 +62,7 @@ class CommunicationDevice(models.Model):
     x_size = models.FloatField()
     y_size = models.FloatField()
     z_size = models.FloatField()
-    robot = models.OneToOneField(Robot, on_delete=models.DO_NOTHING)
+    robot = models.OneToOneField(Robot, on_delete=models.DO_NOTHING, related_name='communication_device')
 
     def __str__(self):
         return f'{self.name}'

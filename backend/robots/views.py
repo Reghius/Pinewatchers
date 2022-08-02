@@ -93,7 +93,21 @@ def get_telemetry(request):
     start_date = request.GET.get('start', None)
     end_date = request.GET.get('end', None)
 
-    telemetry = Telemetry.objects.filter(robot_name=robot_id, timestamp__range=[start_date, end_date])
+    if not robot_id or not start_date or not end_date:
+        return HttpResponse('robot_id must be an integer and dates must be in YYYY-MM-DD format')
+
+    try:
+        telemetry = Telemetry.objects.filter(robot_name=robot_id, timestamp__range=[start_date, end_date])
+    except ValueError:
+        return HttpResponse('robot_id must be an integer')
+    except ValidationError:
+        return HttpResponse('start_date and end_date must me in YYYY-MM-DD format')
+
+    if Robot.objects.filter(id=robot_id).exists():
+        pass
+    else:
+        return HttpResponse('robot with specified id does not exist')
+
     result = []
     for data in telemetry:
         aux = {

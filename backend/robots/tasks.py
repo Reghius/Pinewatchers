@@ -2,6 +2,7 @@ from robots.models import Telemetry, Location, CommunicationDevice, Robot
 import textwrap
 from datetime import datetime
 import struct
+from django.core.exceptions import FieldError
 from celery import shared_task
 
 
@@ -20,7 +21,7 @@ def process_location(sensor_name, location_str):
         latitude = latitude,
         longitude = longitude
     )
-    except:
+    except FieldError:
         pass
 
 
@@ -40,5 +41,5 @@ def process_telemetry(sensor_name, telemetry_str):
         temperature=temperature,
         pressure=pressure
     )
-    except:
+    except FieldError:
         pass

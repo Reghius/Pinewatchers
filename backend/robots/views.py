@@ -1,3 +1,7 @@
+from tracemalloc import start
+from urllib.request import HTTPErrorProcessor
+from xml.dom import ValidationErr
+from django.forms import ValidationError
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
@@ -56,8 +60,24 @@ def get_location(request):
     robot_id = request.GET.get('robot_id', None)
     start_date = request.GET.get('start', None)
     end_date = request.GET.get('end', None)
+    try:
+        location = Location.objects.filter(robot_name=robot_id, timestamp__range=[start_date, end_date])
+    except ValueError:
+        return HttpResponse('robot_id must be an integer')
+    except ValidationError:
+        return HttpResponse('start_date and end_date must me in YYYY-MM-DD format')
 
-    location = Location.objects.filter(robot_name=robot_id, timestamp__range=[start_date, end_date])
+    if not robot_id and not start_date and not end_date:
+        return HttpResponse('Input robot_id as integer and start_date and end_date in YYYY-MM-DD format')
+    elif not start_date and not end_date:
+        return HttpResponse('Input start_date and end_date in YYYY-MM-DD format')
+    elif not start_date:
+        return HttpResponse('Input start_date in YYYY-MM-DD format')
+    elif not end_date:
+        return HttpResponse('Input end_date in YYYY-MM-DD format')
+    elif not robot_id:
+        return HttpResponse('Input robot_id')
+
     result = []
     for data in location:
         aux = {

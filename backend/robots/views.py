@@ -1,11 +1,9 @@
-from tracemalloc import start
-from urllib.request import HTTPErrorProcessor
-from xml.dom import ValidationErr
 from django.forms import ValidationError
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.datastructures import MultiValueDictKeyError
 from robots.models import Client, Robot, Location, Telemetry, CommunicationDevice, RobotManufacturer
 
 
@@ -155,11 +153,14 @@ def modify_robot_brand(request, robot_id):
 
 
 def add_new_client(request):
-    client_name = request.POST['name']
-    krs_number = request.POST['KRS_number']
+    try:
+        client_name = request.POST['name']
+        krs_number = request.POST['krs_number']
+    except MultiValueDictKeyError:
+        return HttpResponse('Key value is not filled in properly')
     if len(client_name)>0 and len(client_name)<50 and len(krs_number) == 10 and krs_number.isnumeric() == True:
-        client = Client.objects.create(name=client_name, KRS_number=krs_number)
+        client = Client.objects.create(name=client_name, krs_number=krs_number)
         client.save()
-        return HttpResponse(status=200)
+        return HttpResponse('Client added succesfully')
     else:
-        return HttpResponse('Name has to have at least one and no more then 50 signs. KRS has to have 10 numbers')
+        return HttpResponse('Name has to have at least one and no more then 200 signs. KRS has to have 10 numbers')

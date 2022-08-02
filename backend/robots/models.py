@@ -45,16 +45,6 @@ class RobotManufacturer(models.Model):
         return f'{self.name}'
 
 
-class CommunicationDevice(models.Model):
-    name = models.CharField(max_length=100)
-    x_size = models.FloatField()
-    y_size = models.FloatField()
-    z_size = models.FloatField()
-
-    def __str__(self):
-        return f'{self.name}'
-
-
 class Robot(models.Model):
     name = models.CharField(max_length=200)
     owner = models.ForeignKey(Client, on_delete=models.CASCADE)
@@ -62,7 +52,17 @@ class Robot(models.Model):
     serial_number = models.CharField(max_length=200)
     production_date = models.DateField()
     type = models.ForeignKey(RobotType, on_delete=models.CASCADE)
-    communication_device = models.ForeignKey(CommunicationDevice, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.name}'
+
+
+class CommunicationDevice(models.Model):
+    name = models.CharField(max_length=100)
+    x_size = models.FloatField()
+    y_size = models.FloatField()
+    z_size = models.FloatField()
+    robot = models.OneToOneField(Robot, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return f'{self.name}'

@@ -30,19 +30,20 @@ class RobotManufacturerAdmin(admin.ModelAdmin):
 
 @admin.register(CommunicationDevice)
 class CommunicationDeviceAdmin(admin.ModelAdmin):
-    search_fields = ['name',]
-    list_filter = ('name',)
+    search_fields = ['name', 'robot']
+    list_filter = ('name', 'robot')
     list_display = (
         'name',
         'x_size',
         'y_size',
-        'z_size'
+        'z_size',
+        'robot'
     )
 
 
 @admin.register(Robot)
 class RobotAdmin(admin.ModelAdmin):
-    search_fields = ['name', 'serial_number', 'production_date', 'communication_device']
+    search_fields = ['name', 'serial_number', 'production_date']
     list_filter = ('owner', 'manufacturer', 'type')
     list_display = (
         'name',
@@ -50,8 +51,7 @@ class RobotAdmin(admin.ModelAdmin):
         'manufacturer',
         'serial_number',
         'production_date',
-        'type',
-        'communication_device'
+        'type'
     )
 
 

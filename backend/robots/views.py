@@ -60,6 +60,10 @@ def get_location(request):
     robot_id = request.GET.get('robot_id', None)
     start_date = request.GET.get('start', None)
     end_date = request.GET.get('end', None)
+
+    if not robot_id or not start_date or not end_date:
+        return HttpResponse('robot_id must be an integer and dates must be in YYYY-MM-DD format')
+
     try:
         location = Location.objects.filter(robot_name=robot_id, timestamp__range=[start_date, end_date])
     except ValueError:
@@ -67,16 +71,10 @@ def get_location(request):
     except ValidationError:
         return HttpResponse('start_date and end_date must me in YYYY-MM-DD format')
 
-    if not robot_id and not start_date and not end_date:
-        return HttpResponse('Input robot_id as integer and start_date and end_date in YYYY-MM-DD format')
-    elif not start_date and not end_date:
-        return HttpResponse('Input start_date and end_date in YYYY-MM-DD format')
-    elif not start_date:
-        return HttpResponse('Input start_date in YYYY-MM-DD format')
-    elif not end_date:
-        return HttpResponse('Input end_date in YYYY-MM-DD format')
-    elif not robot_id:
-        return HttpResponse('Input robot_id')
+    if Robot.objects.filter(id=robot_id).exists():
+        pass
+    else:
+        return HttpResponse('robot with specified id does not exist')
 
     result = []
     for data in location:

@@ -1,50 +1,20 @@
+from http.client import ResponseNotReady
 from django.forms import ValidationError
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
-from robots.serializers import RobotsSerializer, RobotsDataSerializer
+from robots.serializers import RobotsSerializer, RobotsDataSerializer, GetRobotLocations
 from robots.models import Client, Robot, Location, Telemetry, RobotManufacturer
 from rest_framework import viewsets
 from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
 
 
-# def get_robots(request):
-#     data = Robot.objects.all().select_related('owner', 'type')
-#     result = []
-#     for robot in data:
-#         aux = {
-#             'owner': robot.owner.name,
-#             'robot_type': robot.type.robot_type
-#         }
-#         result.append(aux)
-
-#     return JsonResponse(result, safe=False)
-
-
 class RobotsViewSet(viewsets.ModelViewSet, ListModelMixin):
     queryset = Robot.objects.all()
     serializer_class = RobotsSerializer
-
-
-# def get_robots_data(request):
-#     data = Robot.objects.all().select_related('owner', 'manufacturer', 'type')
-#     result = []
-#     for robot in data:
-#         aux = {
-#         'id': robot.id,
-#         'name': robot.name,
-#         'owner': robot.owner.name,
-#         'manufacturer': robot.manufacturer.name,
-#         'serial_number': robot.serial_number,
-#         'production_date': robot.production_date,
-#         'robot_type': robot.type.robot_type,
-#         }
-#         result.append(aux)
-    
-#     return JsonResponse(result, safe=False)
 
 
 class RobotsDataViewSet(viewsets.ModelViewSet, ListModelMixin):
@@ -57,50 +27,17 @@ class RobotsDataViewSet(viewsets.ModelViewSet, ListModelMixin):
         return Response(serializer.data)
 
 
-# def get_robot_data(request, robot_id):
-#     data = get_object_or_404(Robot, id=robot_id)
-#     aux = {
-#         'name': data.name,
-#         'owner': data.owner.name,
-#         'manufacturer': data.manufacturer.name,
-#         'serial_number': data.serial_number,
-#         'production_date': data.production_date,
-#         'robot_type': data.type.robot_type,
-#     }
+class GetLocationsViewSet(viewsets.ModelViewSet, ListModelMixin):
+    serializer_class = GetRobotLocations
 
-#     return JsonResponse(aux, safe=False)
-
-
-def get_location(request):
-    robot_id = request.GET.get('robot_id', None)
-    start_date = request.GET.get('start', None)
-    end_date = request.GET.get('end', None)
-
-    if not robot_id or not start_date or not end_date:
-        return HttpResponse('robot_id must be an integer and dates must be in YYYY-MM-DD format')
-
-    try:
-        location = Location.objects.filter(robot_name=robot_id, timestamp__range=[start_date, end_date])
-    except ValueError:
-        return HttpResponse('robot_id must be an integer')
-    except ValidationError:
-        return HttpResponse('start_date and end_date must me in YYYY-MM-DD format')
-
-    if Robot.objects.filter(id=robot_id).exists():
-        pass
-    else:
-        return HttpResponse('robot with specified id does not exist')
-
-    result = []
-    for data in location:
-        aux = {
-            'robot_name': data.robot_name.name,
-            'latitude': data.latitude,
-            'longitude': data.longitude
-        }
-        result.append(aux)
-
-    return JsonResponse(result, safe=False)
+    def get_queryset(self):
+        queryset = Location.objects.all()
+        robot_id = self.request.query_params.get('robot_id')
+        start_date = self.request.query_params.get('start')
+        end_date = self.request.query_params.get('end')
+        if robot_id is not None:
+            queryset = queryset.filter(robot_name=robot_id, timestamp__range=[start_date, end_date])
+        return queryset
 
 
 def get_telemetry(request):
@@ -181,3 +118,80 @@ def add_new_client(request):
         return HttpResponse('Client added succesfully')
     else:
         return HttpResponse('Name has to have at least one and no more then 200 signs. KRS has to have 10 numbers')
+
+
+# def get_robots(request):
+#     data = Robot.objects.all().select_related('owner', 'type')
+#     result = []
+#     for robot in data:
+#         aux = {
+#             'owner': robot.owner.name,
+#             'robot_type': robot.type.robot_type
+#         }
+#         result.append(aux)
+
+#     return JsonResponse(result, safe=False)
+
+
+# def get_robots_data(request):
+#     data = Robot.objects.all().select_related('owner', 'manufacturer', 'type')
+#     result = []
+#     for robot in data:
+#         aux = {
+#         'id': robot.id,
+#         'name': robot.name,
+#         'owner': robot.owner.name,
+#         'manufacturer': robot.manufacturer.name,
+#         'serial_number': robot.serial_number,
+#         'production_date': robot.production_date,
+#         'robot_type': robot.type.robot_type,
+#         }
+#         result.append(aux)
+    
+#     return JsonResponse(result, safe=False)
+
+
+# def get_robot_data(request, robot_id):
+#     data = get_object_or_404(Robot, id=robot_id)
+#     aux = {
+#         'name': data.name,
+#         'owner': data.owner.name,
+#         'manufacturer': data.manufacturer.name,
+#         'serial_number': data.serial_number,
+#         'production_date': data.production_date,
+#         'robot_type': data.type.robot_type,
+#     }
+
+#     return JsonResponse(aux, safe=False)
+
+
+# def get_location(request):
+#     robot_id = request.GET.get('robot_id', None)
+#     start_date = request.GET.get('start', None)
+#     end_date = request.GET.get('end', None)
+
+#     if not robot_id or not start_date or not end_date:
+#         return HttpResponse('robot_id must be an integer and dates must be in YYYY-MM-DD format')
+
+#     try:
+#         location = Location.objects.filter(robot_name=robot_id, timestamp__range=[start_date, end_date])
+#     except ValueError:
+#         return HttpResponse('robot_id must be an integer')
+#     except ValidationError:
+#         return HttpResponse('start_date and end_date must me in YYYY-MM-DD format')
+
+#     if Robot.objects.filter(id=robot_id).exists():
+#         pass
+#     else:
+#         return HttpResponse('robot with specified id does not exist')
+
+#     result = []
+#     for data in location:
+#         aux = {
+#             'robot_name': data.robot_name.name,
+#             'latitude': data.latitude,
+#             'longitude': data.longitude
+#         }
+#         result.append(aux)
+
+#     return JsonResponse(result, safe=False)

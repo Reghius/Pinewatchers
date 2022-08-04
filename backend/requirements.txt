@@ -4,3 +4,4 @@ paho-mqtt
 redis
 celery
 djangorestframework
+django-filter

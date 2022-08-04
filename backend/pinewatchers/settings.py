@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '[::1]']
 
 INSTALLED_APPS = [
     'rest_framework',
+    'django_filters',
     'robots.apps.RobotsConfig',
     # 'corsheaders',
     'django.contrib.admin',

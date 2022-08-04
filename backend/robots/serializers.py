@@ -72,3 +72,16 @@ class GetRobotTelemetrics(serializers.ModelSerializer):
             'temperature',
             'pressure'
         )
+
+
+class GetLastLocation(serializers.ModelSerializer):
+    robot_name = RobotSerializer()
+
+    class Meta:
+        model = Location
+        fields = (
+            'robot_name',
+            'timestamp',
+            'latitude',
+            'longitude'
+        )

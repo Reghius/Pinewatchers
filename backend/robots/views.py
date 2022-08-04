@@ -1,10 +1,11 @@
+from xml.dom.minidom import Element
 from django.forms import ValidationError
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
-from robots.serializers import RobotsSerializer, RobotsDataSerializer, GetRobotLocations, GetRobotTelemetrics
+from robots.serializers import RobotsSerializer, RobotsDataSerializer, GetRobotLocations, GetRobotTelemetrics, GetLastLocation
 from robots.models import Client, Robot, Location, Telemetry, RobotManufacturer
 from rest_framework import viewsets
 from rest_framework.mixins import ListModelMixin
@@ -49,6 +50,16 @@ class GetTelemetricsViewSet(viewsets.ModelViewSet, ListModelMixin):
         end_date = self.request.query_params.get('end')
         if robot_id and start_date and end_date is not None:
             queryset = queryset.filter(robot_name=robot_id, timestamp__range=[start_date, end_date])
+        return queryset
+
+
+class GetLatestLocationViewSet(viewsets.ModelViewSet, ListModelMixin):
+    serializer_class = GetLastLocation
+
+    def get_queryset(self):
+        location = Location.objects.all()
+        last_location = location.latest('timestamp').timestamp
+        queryset = Location.objects.filter(timestamp=last_location)
         return queryset
 
 

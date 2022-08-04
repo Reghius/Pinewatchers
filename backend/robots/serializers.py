@@ -1,6 +1,6 @@
 from asyncore import read
 from rest_framework import serializers
-from robots.models import Robot, Client, RobotType, RobotManufacturer, Location
+from robots.models import Robot, Client, RobotType, RobotManufacturer, Location, Telemetry
 
 
 class RobotSerializer(serializers.ModelSerializer):
@@ -43,6 +43,7 @@ class RobotsDataSerializer(serializers.ModelSerializer):
     owner = ClientSerializer()
     type = RobotTypeSerialzer()
     manufacturer = ManufacturerSerializer()
+
     class Meta:
         model = Robot
         fields = '__all__'
@@ -57,4 +58,17 @@ class GetRobotLocations(serializers.ModelSerializer):
             'robot_name',
             'latitude',
             'longitude'
+        )
+
+
+class GetRobotTelemetrics(serializers.ModelSerializer):
+    robot_name = RobotSerializer()
+
+    class Meta:
+        model = Telemetry
+        fields = (
+            'robot_name',
+            'humidity',
+            'temperature',
+            'pressure'
         )

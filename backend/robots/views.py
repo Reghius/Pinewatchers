@@ -1,11 +1,10 @@
-from http.client import ResponseNotReady
 from django.forms import ValidationError
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
-from robots.serializers import RobotsSerializer, RobotsDataSerializer, GetRobotLocations
+from robots.serializers import RobotsSerializer, RobotsDataSerializer, GetRobotLocations, GetRobotTelemetrics
 from robots.models import Client, Robot, Location, Telemetry, RobotManufacturer
 from rest_framework import viewsets
 from rest_framework.mixins import ListModelMixin
@@ -35,42 +34,22 @@ class GetLocationsViewSet(viewsets.ModelViewSet, ListModelMixin):
         robot_id = self.request.query_params.get('robot_id')
         start_date = self.request.query_params.get('start')
         end_date = self.request.query_params.get('end')
-        if robot_id is not None:
+        if robot_id and start_date and end_date is not None:
             queryset = queryset.filter(robot_name=robot_id, timestamp__range=[start_date, end_date])
         return queryset
 
 
-def get_telemetry(request):
-    robot_id = request.GET.get('robot_id', None)
-    start_date = request.GET.get('start', None)
-    end_date = request.GET.get('end', None)
+class GetTelemetricsViewSet(viewsets.ModelViewSet, ListModelMixin):
+    serializer_class = GetRobotTelemetrics
 
-    if not robot_id or not start_date or not end_date:
-        return HttpResponse('robot_id must be an integer and dates must be in YYYY-MM-DD format')
-
-    try:
-        telemetry = Telemetry.objects.filter(robot_name=robot_id, timestamp__range=[start_date, end_date])
-    except ValueError:
-        return HttpResponse('robot_id must be an integer')
-    except ValidationError:
-        return HttpResponse('start_date and end_date must me in YYYY-MM-DD format')
-
-    if Robot.objects.filter(id=robot_id).exists():
-        pass
-    else:
-        return HttpResponse('robot with specified id does not exist')
-
-    result = []
-    for data in telemetry:
-        aux = {
-            'robot_name': data.robot_name.name,
-            'humidity': data.humidity,
-            'temperature': data.temperature,
-            'pressure': data.pressure
-        }
-        result.append(aux)
-
-    return JsonResponse(result, safe=False)
+    def get_queryset(self):
+        queryset = Telemetry.objects.all()
+        robot_id = self.request.query_params.get('robot_id')
+        start_date = self.request.query_params.get('start')
+        end_date = self.request.query_params.get('end')
+        if robot_id and start_date and end_date is not None:
+            queryset = queryset.filter(robot_name=robot_id, timestamp__range=[start_date, end_date])
+        return queryset
 
 
 def get_latest_location(request):
@@ -191,6 +170,39 @@ def add_new_client(request):
 #             'robot_name': data.robot_name.name,
 #             'latitude': data.latitude,
 #             'longitude': data.longitude
+#         }
+#         result.append(aux)
+
+#     return JsonResponse(result, safe=False)
+
+
+# def get_telemetry(request):
+#     robot_id = request.GET.get('robot_id', None)
+#     start_date = request.GET.get('start', None)
+#     end_date = request.GET.get('end', None)
+
+#     if not robot_id or not start_date or not end_date:
+#         return HttpResponse('robot_id must be an integer and dates must be in YYYY-MM-DD format')
+
+#     try:
+#         telemetry = Telemetry.objects.filter(robot_name=robot_id, timestamp__range=[start_date, end_date])
+#     except ValueError:
+#         return HttpResponse('robot_id must be an integer')
+#     except ValidationError:
+#         return HttpResponse('start_date and end_date must me in YYYY-MM-DD format')
+
+#     if Robot.objects.filter(id=robot_id).exists():
+#         pass
+#     else:
+#         return HttpResponse('robot with specified id does not exist')
+
+#     result = []
+#     for data in telemetry:
+#         aux = {
+#             'robot_name': data.robot_name.name,
+#             'humidity': data.humidity,
+#             'temperature': data.temperature,
+#             'pressure': data.pressure
 #         }
 #         result.append(aux)
 

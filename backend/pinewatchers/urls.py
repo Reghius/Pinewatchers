@@ -7,7 +7,8 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register(r'robots', views.RobotsViewSet, basename='robots')
 router.register(r'robotsdata', views.RobotsDataViewSet, basename='robots_data')
-router.register(r'robotlocations', views.GetLocationsViewSet, basename='get_robot_location')
+router.register(r'locations', views.GetLocationsViewSet, basename='get_robot_locations')
+router.register(r'telemetries', views.GetTelemetricsViewSet, basename='get_robot_telemetries')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

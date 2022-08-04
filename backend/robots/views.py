@@ -8,6 +8,7 @@ from robots.serializers import RobotsSerializer, RobotsDataSerializer
 from robots.models import Client, Robot, Location, Telemetry, RobotManufacturer
 from rest_framework import viewsets
 from rest_framework.mixins import ListModelMixin
+from rest_framework.response import Response
 
 
 # def get_robots(request):
@@ -50,20 +51,24 @@ class RobotsDataViewSet(viewsets.ModelViewSet, ListModelMixin):
     queryset = Robot.objects.all()
     serializer_class = RobotsDataSerializer
 
+    def retrieve(self, request, pk=None):
+        robot = get_object_or_404(Robot, pk=pk)
+        serializer = RobotsDataSerializer(robot)
+        return Response(serializer.data)
 
-def get_robot_data(request, robot_id):
-    data = get_object_or_404(Robot, id=robot_id)
-    aux = {
-        'name': data.name,
-        'owner': data.owner.name,
-        'manufacturer': data.manufacturer.name,
-        'serial_number': data.serial_number,
-        'production_date': data.production_date,
-        'robot_type': data.type.robot_type,
-        'communication_device_name': data.communication_device_name.name
-    }
 
-    return JsonResponse(aux, safe=False)
+# def get_robot_data(request, robot_id):
+#     data = get_object_or_404(Robot, id=robot_id)
+#     aux = {
+#         'name': data.name,
+#         'owner': data.owner.name,
+#         'manufacturer': data.manufacturer.name,
+#         'serial_number': data.serial_number,
+#         'production_date': data.production_date,
+#         'robot_type': data.type.robot_type,
+#     }
+
+#     return JsonResponse(aux, safe=False)
 
 
 def get_location(request):

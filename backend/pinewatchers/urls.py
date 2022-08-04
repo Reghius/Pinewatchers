@@ -6,6 +6,7 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(r'robots', views.RobotsViewSet, basename='robots')
+router.register(r'robotsdata', views.RobotsDataViewSet, basename='robots_data')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

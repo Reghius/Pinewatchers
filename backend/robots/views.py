@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
-from robots.serializers import RobotsSerializer
+from robots.serializers import RobotsSerializer, RobotsDataSerializer
 from robots.models import Client, Robot, Location, Telemetry, RobotManufacturer
 from rest_framework import viewsets
 from rest_framework.mixins import ListModelMixin
@@ -28,23 +28,27 @@ class RobotsViewSet(viewsets.ModelViewSet, ListModelMixin):
     serializer_class = RobotsSerializer
 
 
-def get_robots_data(request):
-    data = Robot.objects.all().select_related('owner', 'manufacturer', 'type', 'communication_device_name')
-    result = []
-    for robot in data:
-        aux = {
-        'id': robot.id,
-        'name': robot.name,
-        'owner': robot.owner.name,
-        'manufacturer': robot.manufacturer.name,
-        'serial_number': robot.serial_number,
-        'production_date': robot.production_date,
-        'robot_type': robot.type.robot_type,
-        'communication_device_name': robot.communication_device_name.name
-        }
-        result.append(aux)
+# def get_robots_data(request):
+#     data = Robot.objects.all().select_related('owner', 'manufacturer', 'type')
+#     result = []
+#     for robot in data:
+#         aux = {
+#         'id': robot.id,
+#         'name': robot.name,
+#         'owner': robot.owner.name,
+#         'manufacturer': robot.manufacturer.name,
+#         'serial_number': robot.serial_number,
+#         'production_date': robot.production_date,
+#         'robot_type': robot.type.robot_type,
+#         }
+#         result.append(aux)
     
-    return JsonResponse(result, safe=False)
+#     return JsonResponse(result, safe=False)
+
+
+class RobotsDataViewSet(viewsets.ModelViewSet, ListModelMixin):
+    queryset = Robot.objects.all()
+    serializer_class = RobotsDataSerializer
 
 
 def get_robot_data(request, robot_id):

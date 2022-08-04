@@ -27,3 +27,13 @@ class RobotsSerializer(serializers.ModelSerializer):
             'owner',
             'type'
         )
+
+
+class RobotsDataSerializer(serializers.ModelSerializer):
+    owner = serializers.SlugRelatedField(read_only=True, slug_field='name')
+    manufacturer = serializers.SlugRelatedField(read_only=True, slug_field='name')
+    type = serializers.SlugRelatedField(read_only=True, slug_field='robot_type')
+
+    class Meta:
+        model = Robot
+        fields = '__all__'

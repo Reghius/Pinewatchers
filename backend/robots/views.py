@@ -4,20 +4,28 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
-from robots.models import Client, Robot, Location, Telemetry, CommunicationDevice, RobotManufacturer
+from robots.serializers import RobotsSerializer
+from robots.models import Client, Robot, Location, Telemetry, RobotManufacturer
+from rest_framework import viewsets
+from rest_framework.mixins import ListModelMixin
 
 
-def get_robots(request):
-    data = Robot.objects.all().select_related('owner', 'type')
-    result = []
-    for robot in data:
-        aux = {
-            'owner': robot.owner.name,
-            'robot_type': robot.type.robot_type
-        }
-        result.append(aux)
+# def get_robots(request):
+#     data = Robot.objects.all().select_related('owner', 'type')
+#     result = []
+#     for robot in data:
+#         aux = {
+#             'owner': robot.owner.name,
+#             'robot_type': robot.type.robot_type
+#         }
+#         result.append(aux)
 
-    return JsonResponse(result, safe=False)
+#     return JsonResponse(result, safe=False)
+
+
+class RobotsViewSet(viewsets.ModelViewSet, ListModelMixin):
+    queryset = Robot.objects.all()
+    serializer_class = RobotsSerializer
 
 
 def get_robots_data(request):

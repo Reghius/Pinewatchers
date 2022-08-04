@@ -1,6 +1,6 @@
 from asyncore import read
 from rest_framework import serializers
-from robots.models import Robot, Client, RobotType
+from robots.models import Robot, Client, RobotType, RobotManufacturer
 
 
 class ClientSerializer(serializers.ModelSerializer):
@@ -15,11 +15,15 @@ class RobotTypeSerialzer(serializers.ModelSerializer):
         fields = ('robot_type',)
 
 
+class ManufacturerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RobotManufacturer
+        fields = ('name',)
+
+
 class RobotsSerializer(serializers.ModelSerializer):
-    # owner = ClientSerializer()
-    # type = RobotTypeSerialzer()
-    owner = serializers.SlugRelatedField(read_only=True, slug_field='name')
-    type = serializers.SlugRelatedField(read_only=True, slug_field='robot_type')
+    owner = ClientSerializer()
+    type = RobotTypeSerialzer()
 
     class Meta:
         model = Robot
@@ -30,10 +34,9 @@ class RobotsSerializer(serializers.ModelSerializer):
 
 
 class RobotsDataSerializer(serializers.ModelSerializer):
-    owner = serializers.SlugRelatedField(read_only=True, slug_field='name')
-    manufacturer = serializers.SlugRelatedField(read_only=True, slug_field='name')
-    type = serializers.SlugRelatedField(read_only=True, slug_field='robot_type')
-
+    owner = ClientSerializer()
+    type = RobotTypeSerialzer()
+    manufacturer = ManufacturerSerializer()
     class Meta:
         model = Robot
         fields = '__all__'

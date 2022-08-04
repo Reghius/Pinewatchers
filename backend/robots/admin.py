@@ -57,10 +57,10 @@ class RobotAdmin(admin.ModelAdmin):
 
 @admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
-    search_fields = ['robot_name', 'timestamp']
-    list_filter = ('robot_name',)
+    search_fields = ['robot', 'timestamp']
+    list_filter = ('robot',)
     list_display = (
-        'robot_name',
+        'robot',
         'timestamp',
         'latitude',
         'longitude'
@@ -69,10 +69,10 @@ class LocationAdmin(admin.ModelAdmin):
 
 @admin.register(Telemetry)
 class TelemetryAdmin(admin.ModelAdmin):
-    search_fields = ['robot_name', 'timestamp']
-    list_filter = ('robot_name',)
+    search_fields = ['robot', 'timestamp']
+    list_filter = ('robot',)
     list_display = (
-        'robot_name',
+        'robot',
         'timestamp',
         'humidity',
         'temperature',

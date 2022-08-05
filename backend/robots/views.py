@@ -31,7 +31,7 @@ class GetLocationsViewSet(viewsets.ModelViewSet):
         start_date = self.request.query_params.get('start')
         end_date = self.request.query_params.get('end')
         if robot_id and start_date and end_date is not None:
-            queryset = queryset.filter(robot_name=robot_id, timestamp__range=[start_date, end_date])
+            queryset = queryset.filter(robot=robot_id, timestamp__range=[start_date, end_date])
         return queryset
 
 
@@ -44,7 +44,7 @@ class GetTelemetricsViewSet(viewsets.ModelViewSet):
         start_date = self.request.query_params.get('start')
         end_date = self.request.query_params.get('end')
         if robot_id and start_date and end_date is not None:
-            queryset = queryset.filter(robot_name=robot_id, timestamp__range=[start_date, end_date])
+            queryset = queryset.filter(robot=robot_id, timestamp__range=[start_date, end_date])
         return queryset
 
 

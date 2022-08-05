@@ -8,16 +8,11 @@ from django.utils.datastructures import MultiValueDictKeyError
 from robots.serializers import RobotsSerializer, RobotsDataSerializer, GetRobotLocations, GetRobotTelemetrics, GetLastLocation, ModifyRobotBrand, AddNewClient
 from robots.models import Client, Robot, Location, Telemetry, RobotManufacturer
 from rest_framework import viewsets
-from rest_framework.mixins import ListModelMixin
+from rest_framework.mixins import ListModelMixin, CreateModelMixin
 from rest_framework.response import Response
 
 
-class RobotsViewSet(viewsets.ModelViewSet, ListModelMixin):
-    queryset = Robot.objects.all()
-    serializer_class = RobotsSerializer
-
-
-class RobotsDataViewSet(viewsets.ModelViewSet, ListModelMixin):
+class RobotsViewSet(viewsets.ModelViewSet):
     queryset = Robot.objects.all()
     serializer_class = RobotsDataSerializer
 
@@ -27,7 +22,7 @@ class RobotsDataViewSet(viewsets.ModelViewSet, ListModelMixin):
         return Response(serializer.data)
 
 
-class GetLocationsViewSet(viewsets.ModelViewSet, ListModelMixin):
+class GetLocationsViewSet(viewsets.ModelViewSet):
     serializer_class = GetRobotLocations
 
     def get_queryset(self):
@@ -40,7 +35,7 @@ class GetLocationsViewSet(viewsets.ModelViewSet, ListModelMixin):
         return queryset
 
 
-class GetTelemetricsViewSet(viewsets.ModelViewSet, ListModelMixin):
+class GetTelemetricsViewSet(viewsets.ModelViewSet):
     serializer_class = GetRobotTelemetrics
 
     def get_queryset(self):
@@ -53,7 +48,7 @@ class GetTelemetricsViewSet(viewsets.ModelViewSet, ListModelMixin):
         return queryset
 
 
-class GetLatestLocationViewSet(viewsets.ModelViewSet, ListModelMixin):
+class GetLatestLocationViewSet(viewsets.ModelViewSet):
     serializer_class = GetLastLocation
 
     def get_queryset(self):
@@ -61,7 +56,7 @@ class GetLatestLocationViewSet(viewsets.ModelViewSet, ListModelMixin):
         return location
 
 
-class ModifyRobotBrandViewSet(viewsets.ModelViewSet, ListModelMixin):
+class ModifyRobotBrandViewSet(viewsets.ModelViewSet):
     queryset = Robot.objects.all()
     serializer_class = ModifyRobotBrand
 
@@ -72,16 +67,17 @@ class ModifyRobotBrandViewSet(viewsets.ModelViewSet, ListModelMixin):
         robot.save()
 
 
-class AddNewClient(viewsets.ModelViewSet, ListModelMixin):
+class AddNewClientViewSet(viewsets.ModelViewSet, CreateModelMixin):
     queryset = Client.objects.all()
     serializer_class = AddNewClient
 
-    def create(self, request):
+    def create(self, request, *args, **kwargs):
         client_data = request.data
         new_client = Client.objects.create(name=client_data['name'], krs_number=client_data['krs_number'])
         new_client.save()
-        return HttpResponse('Client added')
-
+        serializer = AddNewClient(new_client)
+        return Response(serializer.data)
+   
 
 # def get_robots(request):
 #     data = Robot.objects.all().select_related('owner', 'type')

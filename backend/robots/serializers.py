@@ -95,6 +95,7 @@ class ModifyRobotBrand(serializers.ModelSerializer):
 
 
 class AddNewClient(serializers.ModelSerializer):
+
     class Meta:
         model = Client
-        fields = '__all__'
+        fields = ('name', 'krs_number')

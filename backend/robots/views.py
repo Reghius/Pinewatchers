@@ -81,22 +81,6 @@ class AddNewClient(viewsets.ModelViewSet, ListModelMixin):
         new_client = Client.objects.create(name=client_data['name'], krs_number=client_data['krs_number'])
         new_client.save()
         return HttpResponse('Client added')
-        # serializer = AddNewClient(new_client)
-        # return Response(serializer.data)
-
-
-def add_new_client(request):
-    try:
-        client_name = request.POST['name']
-        krs_number = request.POST['krs_number']
-    except MultiValueDictKeyError:
-        return HttpResponse('Key is not filled in properly')
-    if len(client_name)>0 and len(client_name)<50 and len(krs_number) == 10 and krs_number.isnumeric() == True:
-        client = Client.objects.create(name=client_name, krs_number=krs_number)
-        client.save()
-        return HttpResponse('Client added succesfully')
-    else:
-        return HttpResponse('Name has to have at least one and no more then 200 signs. KRS has to have 10 numbers')
 
 
 # def get_robots(request):
@@ -243,3 +227,17 @@ def add_new_client(request):
 #             return HttpResponse('Given value does not exist')
 #     except AttributeError:
 #         return HttpResponse('Key is not filled in properly')
+
+
+# def add_new_client(request):
+#     try:
+#         client_name = request.POST['name']
+#         krs_number = request.POST['krs_number']
+#     except MultiValueDictKeyError:
+#         return HttpResponse('Key is not filled in properly')
+#     if len(client_name)>0 and len(client_name)<50 and len(krs_number) == 10 and krs_number.isnumeric() == True:
+#         client = Client.objects.create(name=client_name, krs_number=krs_number)
+#         client.save()
+#         return HttpResponse('Client added succesfully')
+#     else:
+#         return HttpResponse('Name has to have at least one and no more then 200 signs. KRS has to have 10 numbers')

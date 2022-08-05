@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
-from robots.serializers import RobotsSerializer, RobotsDataSerializer, GetRobotLocations, GetRobotTelemetrics, GetLastLocation, ModifyRobotBrand
+from robots.serializers import RobotsSerializer, RobotsDataSerializer, GetRobotLocations, GetRobotTelemetrics, GetLastLocation, ModifyRobotBrand, AddNewClient
 from robots.models import Client, Robot, Location, Telemetry, RobotManufacturer
 from rest_framework import viewsets
 from rest_framework.mixins import ListModelMixin
@@ -72,7 +72,17 @@ class ModifyRobotBrandViewSet(viewsets.ModelViewSet, ListModelMixin):
         robot.save()
 
 
+class AddNewClient(viewsets.ModelViewSet, ListModelMixin):
+    queryset = Client.objects.all()
+    serializer_class = AddNewClient
 
+    def create(self, request):
+        client_data = request.data
+        new_client = Client.objects.create(name=client_data['name'], krs_number=client_data['krs_number'])
+        new_client.save()
+        return HttpResponse('Client added')
+        # serializer = AddNewClient(new_client)
+        # return Response(serializer.data)
 
 
 def add_new_client(request):

@@ -92,3 +92,9 @@ class ModifyRobotBrand(serializers.ModelSerializer):
     class Meta:
         model = Robot
         fields = ('manufacturer',)
+
+
+class AddNewClient(serializers.ModelSerializer):
+    class Meta:
+        model = Client
+        fields = '__all__'

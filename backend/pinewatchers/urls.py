@@ -11,6 +11,7 @@ router.register(r'locations', views.GetLocationsViewSet, basename='get_robot_loc
 router.register(r'telemetries', views.GetTelemetricsViewSet, basename='get_robot_telemetries')
 router.register(r'lastlocation', views.GetLatestLocationViewSet, basename='get_latest_location')
 router.register(r'modifybrand', views.ModifyRobotBrandViewSet, basename='modify_robot_brand')
+router.register(r'addclient', views.AddNewClient, basename='add_new_client')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

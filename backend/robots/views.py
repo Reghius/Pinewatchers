@@ -1,11 +1,11 @@
-from xml.dom.minidom import Element
+from django.db import IntegrityError
 from django.forms import ValidationError
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
-from robots.serializers import RobotsSerializer, RobotsDataSerializer, GetRobotLocations, GetRobotTelemetrics, GetLastLocation
+from robots.serializers import RobotsSerializer, RobotsDataSerializer, GetRobotLocations, GetRobotTelemetrics, GetLastLocation, ModifyRobotBrand
 from robots.models import Client, Robot, Location, Telemetry, RobotManufacturer
 from rest_framework import viewsets
 from rest_framework.mixins import ListModelMixin
@@ -57,43 +57,22 @@ class GetLatestLocationViewSet(viewsets.ModelViewSet, ListModelMixin):
     serializer_class = GetLastLocation
 
     def get_queryset(self):
-        location = Location.objects.all()
-        last_location = location.latest('timestamp').timestamp
-        queryset = Location.objects.filter(timestamp=last_location)
-        return queryset
+        location = Location.objects.order_by('robot', '-timestamp').distinct('robot')
+        return location
 
 
-def get_latest_location(request):
-    result = []
-    for aux in Robot.objects.all():
-        try:
-            data = aux.location_set.latest('timestamp')
-            result.append({
-                'robot_name': data.robot_name.name,
-                'timestamp': data.timestamp,
-                'latitude': data.latitude,
-                'longitude': data.longitude
-            })
-        except Location.DoesNotExist:
-            result.append({
-                'robot_name': aux.name,
-                'timestamp': 'No data',
-                'latitude': 'No data',
-                'longitude': 'No data'
-            })
+class ModifyRobotBrandViewSet(viewsets.ModelViewSet, ListModelMixin):
+    queryset = Robot.objects.all()
+    serializer_class = ModifyRobotBrand
 
-    return JsonResponse(result, safe=False)
+    def patch(self, request):
+        robot = Robot.objects.get()
+        data = request.data
+        robot.manufacturer = data.get('manufacturer')
+        robot.save()
 
 
-def modify_robot_brand(request, robot_id):
-    robot_data = get_object_or_404(Robot, id=robot_id)
-    post_data = request.POST.get('manufacturer_id', None)
-    if post_data.isnumeric() == True and len(post_data)>0 and RobotManufacturer.objects.filter(pk=post_data).exists():
-        robot_data.manufacturer_id = post_data
-        robot_data.save()
-        return HttpResponse(status=200)
-    else:
-        return HttpResponse('Wrong value')
+
 
 
 def add_new_client(request):
@@ -101,7 +80,7 @@ def add_new_client(request):
         client_name = request.POST['name']
         krs_number = request.POST['krs_number']
     except MultiValueDictKeyError:
-        return HttpResponse('Key value is not filled in properly')
+        return HttpResponse('Key is not filled in properly')
     if len(client_name)>0 and len(client_name)<50 and len(krs_number) == 10 and krs_number.isnumeric() == True:
         client = Client.objects.create(name=client_name, krs_number=krs_number)
         client.save()
@@ -218,3 +197,39 @@ def add_new_client(request):
 #         result.append(aux)
 
 #     return JsonResponse(result, safe=False)
+
+
+# def get_latest_location(request):
+#     result = []
+#     for aux in Robot.objects.all():
+#         try:
+#             data = aux.location_set.latest('timestamp')
+#             result.append({
+#                 'robot_name': data.robot_name.name,
+#                 'timestamp': data.timestamp,
+#                 'latitude': data.latitude,
+#                 'longitude': data.longitude
+#             })
+#         except Location.DoesNotExist:
+#             result.append({
+#                 'robot_name': aux.name,
+#                 'timestamp': 'No data',
+#                 'latitude': 'No data',
+#                 'longitude': 'No data'
+#             })
+
+#     return JsonResponse(result, safe=False)
+
+
+# def modify_robot_brand(request, robot_id):
+#     robot_data = get_object_or_404(Robot, id=robot_id)
+#     post_data = request.POST.get('manufacturer_id', None)
+#     try:
+#         if post_data.isnumeric() == True and len(post_data)>0 and RobotManufacturer.objects.filter(pk=post_data).exists():
+#             robot_data.manufacturer_id = post_data
+#             robot_data.save()
+#             return HttpResponse('Brand modified successfully')
+#         else:
+#             return HttpResponse('Given value does not exist')
+#     except AttributeError:
+#         return HttpResponse('Key is not filled in properly')

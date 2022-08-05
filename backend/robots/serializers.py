@@ -50,24 +50,24 @@ class RobotsDataSerializer(serializers.ModelSerializer):
 
 
 class GetRobotLocations(serializers.ModelSerializer):
-    robot_name = RobotSerializer()
+    robot = RobotSerializer()
 
     class Meta:
         model = Location
         fields = (
-            'robot_name',
+            'robot',
             'latitude',
             'longitude'
         )
 
 
 class GetRobotTelemetrics(serializers.ModelSerializer):
-    robot_name = RobotSerializer()
+    robot = RobotSerializer()
 
     class Meta:
         model = Telemetry
         fields = (
-            'robot_name',
+            'robot',
             'humidity',
             'temperature',
             'pressure'
@@ -75,13 +75,20 @@ class GetRobotTelemetrics(serializers.ModelSerializer):
 
 
 class GetLastLocation(serializers.ModelSerializer):
-    robot_name = RobotSerializer()
+    robot = RobotSerializer()
 
     class Meta:
         model = Location
         fields = (
-            'robot_name',
+            'robot',
             'timestamp',
             'latitude',
             'longitude'
         )
+
+
+class ModifyRobotBrand(serializers.ModelSerializer):
+
+    class Meta:
+        model = Robot
+        fields = ('manufacturer',)

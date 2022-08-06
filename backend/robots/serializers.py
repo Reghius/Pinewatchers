@@ -27,18 +27,6 @@ class ManufacturerSerializer(serializers.ModelSerializer):
         fields = ('name',)
 
 
-class RobotsSerializer(serializers.ModelSerializer):
-    owner = ClientSerializer()
-    type = RobotTypeSerialzer()
-
-    class Meta:
-        model = Robot
-        fields = (
-            'owner',
-            'type'
-        )
-
-
 class RobotsDataSerializer(serializers.ModelSerializer):
     owner = ClientSerializer()
     type = RobotTypeSerialzer()
@@ -74,7 +62,7 @@ class GetRobotTelemetrics(serializers.ModelSerializer):
         )
 
 
-class GetLastLocation(serializers.ModelSerializer):
+class GetLastLocationSerializer(serializers.ModelSerializer):
     robot = RobotSerializer()
 
     class Meta:
@@ -92,6 +80,7 @@ class ModifyRobotBrand(serializers.ModelSerializer):
     class Meta:
         model = Robot
         fields = ('manufacturer',)
+
 
 
 class AddNewClient(serializers.ModelSerializer):

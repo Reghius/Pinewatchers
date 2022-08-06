@@ -5,21 +5,17 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
-from robots.serializers import RobotsSerializer, RobotsDataSerializer, GetRobotLocations, GetRobotTelemetrics, GetLastLocation, ModifyRobotBrand, AddNewClient
+from robots.serializers import RobotsDataSerializer, GetRobotLocations, GetRobotTelemetrics, GetLastLocationSerializer, ModifyRobotBrand, AddNewClient
 from robots.models import Client, Robot, Location, Telemetry, RobotManufacturer
 from rest_framework import viewsets
-from rest_framework.mixins import ListModelMixin, CreateModelMixin
+from rest_framework.mixins import ListModelMixin, CreateModelMixin, UpdateModelMixin
 from rest_framework.response import Response
+from rest_framework import generics, mixins
 
 
-class RobotsViewSet(viewsets.ModelViewSet):
+class RobotsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Robot.objects.all()
     serializer_class = RobotsDataSerializer
-
-    def retrieve(self, request, pk=None):
-        robot = get_object_or_404(Robot, pk=pk)
-        serializer = RobotsDataSerializer(robot)
-        return Response(serializer.data)
 
 
 class GetLocationsViewSet(viewsets.ModelViewSet):
@@ -49,7 +45,7 @@ class GetTelemetricsViewSet(viewsets.ModelViewSet):
 
 
 class GetLatestLocationViewSet(viewsets.ModelViewSet):
-    serializer_class = GetLastLocation
+    serializer_class = GetLastLocationSerializer
 
     def get_queryset(self):
         location = Location.objects.order_by('robot', '-timestamp').distinct('robot')
@@ -60,23 +56,10 @@ class ModifyRobotBrandViewSet(viewsets.ModelViewSet):
     queryset = Robot.objects.all()
     serializer_class = ModifyRobotBrand
 
-    def patch(self, request):
-        robot = Robot.objects.get()
-        data = request.data
-        robot.manufacturer = data.get('manufacturer')
-        robot.save()
 
-
-class AddNewClientViewSet(viewsets.ModelViewSet, CreateModelMixin):
+class AddNewClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = AddNewClient
-
-    def create(self, request, *args, **kwargs):
-        client_data = request.data
-        new_client = Client.objects.create(name=client_data['name'], krs_number=client_data['krs_number'])
-        new_client.save()
-        serializer = AddNewClient(new_client)
-        return Response(serializer.data)
    
 
 # def get_robots(request):

@@ -7,10 +7,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
 from robots.serializers import RobotsDataSerializer, GetRobotLocations, GetRobotTelemetrics, GetLastLocationSerializer, ModifyRobotBrand, AddNewClient
 from robots.models import Client, Robot, Location, Telemetry, RobotManufacturer
+from robots.filters import LocationFilter
 from rest_framework import viewsets
 from rest_framework.mixins import ListModelMixin, CreateModelMixin, UpdateModelMixin
 from rest_framework.response import Response
 from rest_framework import generics, mixins
+from django_filters import rest_framework as filters
 
 
 class RobotsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
@@ -18,17 +20,11 @@ class RobotsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.G
     serializer_class = RobotsDataSerializer
 
 
-class GetLocationsViewSet(viewsets.ModelViewSet):
+class LocationFilterViewSet(viewsets.ModelViewSet):
+    queryset = Location.objects.all()
     serializer_class = GetRobotLocations
-
-    def get_queryset(self):
-        queryset = Location.objects.all()
-        robot_id = self.request.query_params.get('robot_id')
-        start_date = self.request.query_params.get('start')
-        end_date = self.request.query_params.get('end')
-        if robot_id and start_date and end_date is not None:
-            queryset = queryset.filter(robot=robot_id, timestamp__range=[start_date, end_date])
-        return queryset
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = LocationFilter
 
 
 class GetTelemetricsViewSet(viewsets.ModelViewSet):

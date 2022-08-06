@@ -7,5 +7,5 @@ class LocationFilter(filters.FilterSet):
         model = Location
         fields = {
             'robot': ['exact'],
-            'timestamp': ['timestamp__gte', 'timestamp__lte'],
+            'timestamp': ['gte', 'lte'],
         }

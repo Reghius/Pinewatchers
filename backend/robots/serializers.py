@@ -1,6 +1,5 @@
-from asyncore import read
 from rest_framework import serializers
-from robots.models import Robot, Client, RobotType, RobotManufacturer, Location, Telemetry
+from robots.models import Robot, Client, RobotType, RobotManufacturer, Location, Telemetry, CommunicationDevice
 
 
 class RobotSerializer(serializers.ModelSerializer):
@@ -88,3 +87,11 @@ class AddNewClient(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = ('name', 'krs_number')
+
+
+class DetachCommunicationSerializer(serializers.ModelSerializer):
+    robot = RobotSerializer
+
+    class Meta:
+        model = CommunicationDevice
+        fields = ('robot',)

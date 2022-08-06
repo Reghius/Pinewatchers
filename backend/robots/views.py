@@ -1,16 +1,8 @@
-from django.db import IntegrityError
-from django.forms import ValidationError
-from django.http import JsonResponse, HttpResponse
-from django.shortcuts import get_object_or_404
-from django.views.decorators.csrf import csrf_exempt
-from django.core.exceptions import ObjectDoesNotExist
-from django.utils.datastructures import MultiValueDictKeyError
-from robots.serializers import RobotsDataSerializer, GetRobotLocations, GetRobotTelemetrics, GetLastLocationSerializer, ModifyRobotBrand, AddNewClient
-from robots.models import Client, Robot, Location, Telemetry, RobotManufacturer
+from robots.serializers import RobotsDataSerializer, GetRobotLocations, GetRobotTelemetrics, GetLastLocationSerializer, ModifyRobotBrand, AddNewClient, DetachCommunicationSerializer
+from robots.models import Client, Robot, Location, Telemetry, CommunicationDevice
 from robots.filters import LocationFilter, TelemetryFilter
 from rest_framework import viewsets
 from rest_framework.mixins import ListModelMixin, CreateModelMixin, UpdateModelMixin
-from rest_framework.response import Response
 from rest_framework import generics, mixins
 from django_filters import rest_framework as filters
 
@@ -42,15 +34,20 @@ class GetLatestLocationViewSet(viewsets.ModelViewSet):
         return location
 
 
-class ModifyRobotBrandViewSet(mixins.RetrieveModelMixin, UpdateModelMixin, viewsets.GenericViewSet):
+class ModifyRobotBrandViewSet(mixins.ListModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
     queryset = Robot.objects.all()
     serializer_class = ModifyRobotBrand
 
 
-class AddNewClientViewSet(CreateModelMixin, viewsets.GenericViewSet):
+class AddNewClientViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = Client.objects.all()
     serializer_class = AddNewClient
    
+
+class DetachCommunicationDeviceViewSet(mixins.ListModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    queryset = CommunicationDevice.objects.all()
+    serializer_class = DetachCommunicationSerializer
+
 
 # def get_robots(request):
 #     data = Robot.objects.all().select_related('owner', 'type')

@@ -11,6 +11,7 @@ router.register(r'telemetrics', views.GetTelemetricsViewSet, basename='get_robot
 router.register(r'lastlocation', views.GetLatestLocationViewSet, basename='get_latest_location')
 router.register(r'modifybrand', views.ModifyRobotBrandViewSet, basename='modify_robot_brand')
 router.register(r'addclient', views.AddNewClientViewSet, basename='add_new_client')
+router.register(r'detach', views.DetachCommunicationDeviceViewSet, basename='detach_communication_device')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

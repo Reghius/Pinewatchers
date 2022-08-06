@@ -94,4 +94,12 @@ class DetachCommunicationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CommunicationDevice
-        fields = ('robot',)
+        fields = ('id', 'robot')
+
+
+class AttachCommunicationSerializer(serializers.ModelSerializer):
+    robot = RobotSerializer
+
+    class Meta:
+        model = CommunicationDevice
+        fields = ('id', 'robot')

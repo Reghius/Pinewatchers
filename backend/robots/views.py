@@ -42,12 +42,12 @@ class GetLatestLocationViewSet(viewsets.ModelViewSet):
         return location
 
 
-class ModifyRobotBrandViewSet(viewsets.ModelViewSet):
+class ModifyRobotBrandViewSet(mixins.RetrieveModelMixin, UpdateModelMixin, viewsets.GenericViewSet):
     queryset = Robot.objects.all()
     serializer_class = ModifyRobotBrand
 
 
-class AddNewClientViewSet(viewsets.ModelViewSet):
+class AddNewClientViewSet(CreateModelMixin, viewsets.GenericViewSet):
     queryset = Client.objects.all()
     serializer_class = AddNewClient
    

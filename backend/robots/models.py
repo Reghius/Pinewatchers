@@ -1,11 +1,9 @@
-from tkinter import N
 from django.db import models
-from django.forms import ChoiceField
-
+from robots.validators import validate_krs
 
 class Client(models.Model):
     name = models.CharField(max_length=200)
-    krs_number = models.CharField(max_length=10)
+    krs_number = models.IntegerField(validators=[validate_krs])
     city = models.CharField(max_length=100, blank=True)
     street = models.CharField(max_length=100, blank=True)
     street_number = models.CharField(max_length=100, blank=True)

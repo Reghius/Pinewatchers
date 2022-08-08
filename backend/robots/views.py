@@ -1,7 +1,8 @@
-from sqlite3 import Timestamp
+from http.client import HTTPResponse
+from urllib import response
 from robots.serializers import RobotsDataSerializer, GetRobotLocations, GetRobotTelemetrics, GetLastLocationSerializer, ModifyRobotBrand, AddNewClient, DetachCommunicationSerializer, AttachCommunicationSerializer, ModifyRobotSerializer, AddCommunicationDeviceSerializer, DeleteLocationsSerializer
 from robots.models import Client, Robot, Location, Telemetry, CommunicationDevice
-from robots.filters import LocationFilter, TelemetryFilter
+from robots.filters import RobotFilter, LocationFilter, TelemetryFilter
 from rest_framework import viewsets
 from rest_framework.mixins import ListModelMixin, CreateModelMixin, UpdateModelMixin
 from rest_framework import generics, mixins
@@ -13,6 +14,8 @@ class RobotsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.G
     queryset = Robot.objects.all()
     serializer_class = RobotsDataSerializer
     pagination_class = RobotsPagination
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = RobotFilter
 
 
 class LocationFilterViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):

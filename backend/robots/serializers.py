@@ -103,3 +103,18 @@ class AttachCommunicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = CommunicationDevice
         fields = ('id', 'robot')
+
+
+class DetachAttachCommunicationSerializer(serializers.ModelSerializer):
+    robot = RobotSerializer
+
+    class Meta:
+        model = CommunicationDevice
+        fields = ('id', 'robot')
+
+
+class ModifyRobotSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Robot
+        fields = '__all__'

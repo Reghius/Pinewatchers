@@ -12,9 +12,11 @@ router.register(r'lastlocation', views.GetLatestLocationViewSet, basename='get_l
 router.register(r'modifybrand', views.ModifyRobotBrandViewSet, basename='modify_robot_brand')
 router.register(r'addclient', views.AddNewClientViewSet, basename='add_new_client')
 router.register(r'detach', views.DetachCommunicationDeviceViewSet, basename='detach_communication_device')
-router.register(r'attach', views.AttachCommunicationDeviceViewSet, basename='detach_communication_device')
+router.register(r'attach', views.AttachCommunicationDeviceViewSet, basename='attach_communication_device')
+router.register(r'deattach', views.DetachAttachCommunicationDeviceViewSet, basename='detach_attach_communication_device')
+router.register(r'modifyrobot', views.ModifyRobotViewSet, basename='modify_specified_robot')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('robotsapp/', include('robots.urls'))
+    path('robotsapp/', include('robots.urls')),
 ] + router.urls

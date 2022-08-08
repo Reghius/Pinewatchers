@@ -1,4 +1,5 @@
-from robots.serializers import RobotsDataSerializer, GetRobotLocations, GetRobotTelemetrics, GetLastLocationSerializer, ModifyRobotBrand, AddNewClient, DetachCommunicationSerializer, AttachCommunicationSerializer
+from logging import NullHandler
+from robots.serializers import RobotsDataSerializer, GetRobotLocations, GetRobotTelemetrics, GetLastLocationSerializer, ModifyRobotBrand, AddNewClient, DetachCommunicationSerializer, AttachCommunicationSerializer, ModifyRobotSerializer
 from robots.models import Client, Robot, Location, Telemetry, CommunicationDevice
 from robots.filters import LocationFilter, TelemetryFilter
 from rest_framework import viewsets
@@ -52,6 +53,27 @@ class DetachCommunicationDeviceViewSet(mixins.ListModelMixin, mixins.UpdateModel
 class AttachCommunicationDeviceViewSet(mixins.ListModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
     queryset = CommunicationDevice.objects.all()
     serializer_class = AttachCommunicationSerializer
+
+
+class DetachAttachCommunicationDeviceViewSet(mixins.ListModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    queryset = CommunicationDevice.objects.all()
+    serializer_class = DetachCommunicationSerializer
+
+    def update(self, request, *args, **kwargs):
+        from_device = request.GET.get('from')
+        to_device = request.GET.get('to')
+        auxold = CommunicationDevice.object.get(id=from_device)
+        old = CommunicationDevice.objects.get(id=from_device)
+        old.robot = None
+        old.save()
+        new = CommunicationDevice.objects.get(id=to_device)
+        new.robot = auxold.robot
+        new.save()
+
+class ModifyRobotViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    queryset = Robot.objects.all()
+    serializer_class = ModifyRobotSerializer
+
 
 # def get_robots(request):
 #     data = Robot.objects.all().select_related('owner', 'type')

@@ -1,4 +1,3 @@
-from logging import NullHandler
 from robots.serializers import RobotsDataSerializer, GetRobotLocations, GetRobotTelemetrics, GetLastLocationSerializer, ModifyRobotBrand, AddNewClient, DetachCommunicationSerializer, AttachCommunicationSerializer, ModifyRobotSerializer, AddCommunicationDeviceSerializer
 from robots.models import Client, Robot, Location, Telemetry, CommunicationDevice
 from robots.filters import LocationFilter, TelemetryFilter
@@ -78,6 +77,12 @@ class ModifyRobotViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, vie
 class AddCommunicationDeviceViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = CommunicationDevice.objects.all()
     serializer_class = AddCommunicationDeviceSerializer
+
+
+class RemoveRobotViewSet(mixins.RetrieveModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
+    queryset = Robot.objects.all()
+    serializer_class = RobotsDataSerializer
+
 
 # def get_robots(request):
 #     data = Robot.objects.all().select_related('owner', 'type')

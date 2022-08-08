@@ -47,10 +47,10 @@ class RobotManufacturer(models.Model):
 class Robot(models.Model):
     name = models.CharField(max_length=200)
     owner = models.ForeignKey(Client, on_delete=models.CASCADE)
-    manufacturer = models.ForeignKey(RobotManufacturer, on_delete=models.CASCADE)
+    manufacturer = models.ForeignKey(RobotManufacturer, on_delete=models.DO_NOTHING)
     serial_number = models.CharField(max_length=200)
     production_date = models.DateField()
-    type = models.ForeignKey(RobotType, on_delete=models.CASCADE)
+    type = models.ForeignKey(RobotType, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return f'{self.name}'
@@ -68,14 +68,14 @@ class CommunicationDevice(models.Model):
 
 
 class Location(models.Model):
-    robot = models.ForeignKey(Robot, on_delete=models.CASCADE)
+    robot = models.ForeignKey(Robot, on_delete=models.SET_NULL, null=True)
     timestamp = models.DateTimeField()
     latitude = models.FloatField()
     longitude = models.FloatField()
 
 
 class Telemetry(models.Model):
-    robot = models.ForeignKey(Robot, on_delete=models.CASCADE)
+    robot = models.ForeignKey(Robot, on_delete=models.SET_NULL, null=True)
     timestamp = models.DateTimeField()
     humidity = models.FloatField()
     temperature = models.FloatField()

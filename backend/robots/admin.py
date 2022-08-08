@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Client, RobotManufacturer, RobotType, CommunicationDevice, Robot, Location, Telemetry
+from .models import Client, RobotManufacturer, RobotType, CommunicationDevice, Robot, Location, Telemetry, RobotModificationHistory
 
 
 @admin.register(Client)
@@ -77,4 +77,16 @@ class TelemetryAdmin(admin.ModelAdmin):
         'humidity',
         'temperature',
         'pressure'
+    )
+
+
+@admin.register(RobotModificationHistory)
+class RobotModificationHistoryAdmin(admin.ModelAdmin):
+    list_display = (
+        'name',
+        'owner',
+        'manufacturer',
+        'serial_number',
+        'production_date',
+        'type'
     )

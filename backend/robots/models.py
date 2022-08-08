@@ -80,3 +80,12 @@ class Telemetry(models.Model):
     humidity = models.FloatField()
     temperature = models.FloatField()
     pressure = models.FloatField()
+
+
+class RobotModificationHistory(models.Model):
+    name = models.CharField(max_length=200, null=True, blank=True)
+    owner = models.CharField(max_length=200, null=True, blank=True)
+    manufacturer = models.CharField(max_length=200, null=True, blank=True)
+    serial_number = models.CharField(max_length=200, null=True, blank=True)
+    production_date = models.DateField(null=True, blank=True)
+    type = models.CharField(max_length=20, null=True, blank=True)

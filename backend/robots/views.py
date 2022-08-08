@@ -74,6 +74,8 @@ class ModifyRobotViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, vie
     serializer_class = ModifyRobotSerializer
 
 
+
+
 class AddCommunicationDeviceViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = CommunicationDevice.objects.all()
     serializer_class = AddCommunicationDeviceSerializer
@@ -84,7 +86,7 @@ class RemoveRobotViewSet(mixins.RetrieveModelMixin, mixins.DestroyModelMixin, vi
     serializer_class = RobotsDataSerializer
 
 
-class RemoveLocationViewSet(mixins.RetrieveModelMixin ,mixins.DestroyModelMixin, viewsets.GenericViewSet):
+class RemoveLocationViewSet(mixins.RetrieveModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     queryset = Robot.objects.all()
     serializer_class = DeleteLocationsSerializer
 
@@ -92,6 +94,17 @@ class RemoveLocationViewSet(mixins.RetrieveModelMixin ,mixins.DestroyModelMixin,
         device = self.get_object()
         date = request.GET.get('date')
         Location.objects.filter(robot=device, timestamp__date=date).delete()
+
+
+class SetTempertatureViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    queryset = Robot.objects.all()
+    serializer_class = DeleteLocationsSerializer
+
+    def update(self, request, *args, **kwargs):
+        device = self.get_object()
+        new_temperature = request.GET.get('temperature')
+        date = request.GET.get('date')
+        Telemetry.objects.filter(robot=device, timestamp__date=date).update(temperature = new_temperature)
 # def get_robots(request):
 #     data = Robot.objects.all().select_related('owner', 'type')
 #     result = []

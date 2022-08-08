@@ -15,6 +15,7 @@ router.register(r'detach', views.DetachCommunicationDeviceViewSet, basename='det
 router.register(r'attach', views.AttachCommunicationDeviceViewSet, basename='attach_communication_device')
 router.register(r'deattach', views.DetachAttachCommunicationDeviceViewSet, basename='detach_attach_communication_device')
 router.register(r'modifyrobot', views.ModifyRobotViewSet, basename='modify_specified_robot')
+router.register(r'addcomm', views.AddCommunicationDeviceViewSet, basename='add_communication_device')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

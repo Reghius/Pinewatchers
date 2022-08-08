@@ -57,7 +57,7 @@ class Robot(models.Model):
 
 
 class CommunicationDevice(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     x_size = models.FloatField()
     y_size = models.FloatField()
     z_size = models.FloatField()

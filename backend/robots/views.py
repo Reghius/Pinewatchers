@@ -54,19 +54,17 @@ class AttachCommunicationDeviceViewSet(mixins.ListModelMixin, mixins.UpdateModel
     serializer_class = AttachCommunicationSerializer
 
 
-class DetachAttachCommunicationDeviceViewSet(mixins.ListModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class DetachAttachCommunicationDeviceViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
     queryset = CommunicationDevice.objects.all()
     serializer_class = DetachCommunicationSerializer
 
     def update(self, request, *args, **kwargs):
-        from_device = request.GET.get('from')
+        from_device = self.get_object()
         to_device = request.GET.get('to')
-        auxold = CommunicationDevice.object.get(id=from_device)
-        old = CommunicationDevice.objects.get(id=from_device)
-        old.robot = None
-        old.save()
-        new = CommunicationDevice.objects.get(id=to_device)
-        new.robot = auxold.robot
+        new = CommunicationDevice.objects.get(name=to_device)
+        new.robot = from_device.robot
+        from_device.robot = None
+        from_device.save()
         new.save()
 
 class ModifyRobotViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):

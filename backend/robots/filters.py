@@ -10,6 +10,7 @@ class LocationFilter(filters.FilterSet):
             'timestamp': ['gte', 'lte'],
         }
 
+
 class TelemetryFilter(filters.FilterSet):
     class Meta:
         model = Telemetry

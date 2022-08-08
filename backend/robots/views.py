@@ -1,4 +1,5 @@
-from robots.serializers import RobotsDataSerializer, GetRobotLocations, GetRobotTelemetrics, GetLastLocationSerializer, ModifyRobotBrand, AddNewClient, DetachCommunicationSerializer, AttachCommunicationSerializer, ModifyRobotSerializer, AddCommunicationDeviceSerializer
+from sqlite3 import Timestamp
+from robots.serializers import RobotsDataSerializer, GetRobotLocations, GetRobotTelemetrics, GetLastLocationSerializer, ModifyRobotBrand, AddNewClient, DetachCommunicationSerializer, AttachCommunicationSerializer, ModifyRobotSerializer, AddCommunicationDeviceSerializer, DeleteLocationsSerializer
 from robots.models import Client, Robot, Location, Telemetry, CommunicationDevice
 from robots.filters import LocationFilter, TelemetryFilter
 from rest_framework import viewsets
@@ -61,11 +62,12 @@ class DetachAttachCommunicationDeviceViewSet(mixins.UpdateModelMixin, viewsets.G
     def update(self, request, *args, **kwargs):
         from_device = self.get_object()
         to_device = request.GET.get('to')
-        new = CommunicationDevice.objects.get(name=to_device)
+        new = CommunicationDevice.objects.get(id=to_device)
         new.robot = from_device.robot
         from_device.robot = None
         from_device.save()
         new.save()
+
 
 class ModifyRobotViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
     queryset = Robot.objects.all()
@@ -82,6 +84,14 @@ class RemoveRobotViewSet(mixins.RetrieveModelMixin, mixins.DestroyModelMixin, vi
     serializer_class = RobotsDataSerializer
 
 
+class RemoveLocationViewSet(mixins.RetrieveModelMixin ,mixins.DestroyModelMixin, viewsets.GenericViewSet):
+    queryset = Robot.objects.all()
+    serializer_class = DeleteLocationsSerializer
+
+    def destroy(self, request, *args, **kwargs):
+        device = self.get_object()
+        date = request.GET.get('date')
+        Location.objects.filter(robot=device, timestamp__date=date).delete()
 # def get_robots(request):
 #     data = Robot.objects.all().select_related('owner', 'type')
 #     result = []

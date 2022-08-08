@@ -125,3 +125,10 @@ class AddCommunicationDeviceSerializer(serializers.ModelSerializer):
     class Meta:
         model = CommunicationDevice
         fields = '__all__'
+
+
+class DeleteLocationsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Robot
+        fields = '__all__'

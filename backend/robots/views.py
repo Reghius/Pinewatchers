@@ -168,13 +168,14 @@ class CreateCompanyViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
 
     def create(self, request, *args, **kwargs):
         nip = request.GET.get("nip")
-        print(
-            "https://wl-api.mf.gov.pl/api/search/nip/"
-            + nip
-            + "/?date="
-            + str(datetime.date(datetime.now()))
+        data = requests.get(
+            f"https://wl-api.mf.gov.pl/api/search/nip/{nip}"
+            f"/?date={str(datetime.date(datetime.now()))}"
         )
-
+        jsonResponse = data.json()
+        name = jsonResponse["result"]["subject"]["name"]
+        krs = jsonResponse["result"]["subject"]["krs"]
+        Client.objects.create(name=name, krs_number=krs)
 
 # def get_robots(request):
 #     data = Robot.objects.all().select_related("owner", "type")

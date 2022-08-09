@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken import views as auth_views
 from robots import views
 
 router = DefaultRouter()
@@ -71,4 +72,5 @@ router.register(
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("robotsapp/", include("robots.urls")),
+    path("authentication/", auth_views.obtain_auth_token)
 ] + router.urls

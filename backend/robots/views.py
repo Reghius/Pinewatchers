@@ -108,9 +108,6 @@ class ModifyRobotViewSet(
     queryset = Robot.objects.all()
     serializer_class = ModifyRobotSerializer
 
-    def update(self, request, *args, **kwargs):
-        pass
-
 
 class AddCommunicationDeviceViewSet(
     mixins.CreateModelMixin, viewsets.GenericViewSet
@@ -173,6 +170,7 @@ class CreateCompanyViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         name = jsonResponse["result"]["subject"]["name"]
         krs = jsonResponse["result"]["subject"]["krs"]
         Client.objects.create(name=name, krs_number=krs)
+
 
 # def get_robots(request):
 #     data = Robot.objects.all().select_related("owner", "type")

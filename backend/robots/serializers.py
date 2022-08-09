@@ -111,9 +111,11 @@ class ModifyRobotSerializer(serializers.ModelSerializer):
 
 
 class AddCommunicationDeviceSerializer(serializers.ModelSerializer):
+    owner = ClientSerializer
+
     class Meta:
         model = CommunicationDevice
-        fields = "__all__"
+        fields = ("name", "owner")
 
 
 class DeleteLocationsSerializer(serializers.ModelSerializer):

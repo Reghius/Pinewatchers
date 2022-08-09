@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "django_filters",
+    "channels",
     "robots.apps.RobotsConfig",
     # 'corsheaders',
     "django.contrib.admin",
@@ -88,6 +89,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "pinewatchers.wsgi.application"
+
+
+ASGI_APPLICATION = "pinewatchers.asgi.application"
 
 
 # Database

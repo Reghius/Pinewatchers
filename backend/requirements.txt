@@ -6,3 +6,4 @@ celery
 djangorestframework
 django-filter
 requests
+channels

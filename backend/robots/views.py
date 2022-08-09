@@ -1,16 +1,40 @@
-from http.client import HTTPResponse
-from urllib import response
-from robots.serializers import RobotsDataSerializer, GetRobotLocations, GetRobotTelemetrics, GetLastLocationSerializer, ModifyRobotBrand, AddNewClient, DetachCommunicationSerializer, AttachCommunicationSerializer, ModifyRobotSerializer, AddCommunicationDeviceSerializer, DeleteLocationsSerializer
-from robots.models import Client, Robot, Location, Telemetry, CommunicationDevice
-from robots.filters import RobotFilter, LocationFilter, TelemetryFilter
-from rest_framework import viewsets
-from rest_framework.mixins import ListModelMixin, CreateModelMixin, UpdateModelMixin
-from rest_framework import generics, mixins
+from datetime import datetime
+
+import requests
 from django_filters import rest_framework as filters
+from rest_framework import generics, mixins, viewsets
+from rest_framework.mixins import (
+    CreateModelMixin,
+    ListModelMixin,
+    UpdateModelMixin,
+)
+from robots.filters import LocationFilter, RobotFilter, TelemetryFilter
+from robots.models import (
+    Client,
+    CommunicationDevice,
+    Location,
+    Robot,
+    Telemetry,
+)
 from robots.paginations import RobotsPagination
+from robots.serializers import (
+    AddCommunicationDeviceSerializer,
+    AddNewClient,
+    AttachCommunicationSerializer,
+    DeleteLocationsSerializer,
+    DetachCommunicationSerializer,
+    GetLastLocationSerializer,
+    GetRobotLocations,
+    GetRobotTelemetrics,
+    ModifyRobotBrand,
+    ModifyRobotSerializer,
+    RobotsDataSerializer,
+)
 
 
-class RobotsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class RobotsViewSet(
+    mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
+):
     queryset = Robot.objects.all()
     serializer_class = RobotsDataSerializer
     pagination_class = RobotsPagination
@@ -36,11 +60,15 @@ class GetLatestLocationViewSet(viewsets.ModelViewSet):
     serializer_class = GetLastLocationSerializer
 
     def get_queryset(self):
-        location = Location.objects.order_by('robot', '-timestamp').distinct('robot')
+        location = Location.objects.order_by("robot", "-timestamp").distinct(
+            "robot"
+        )
         return location
 
 
-class ModifyRobotBrandViewSet(mixins.ListModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class ModifyRobotBrandViewSet(
+    mixins.ListModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet
+):
     queryset = Robot.objects.all()
     serializer_class = ModifyRobotBrand
 
@@ -48,25 +76,31 @@ class ModifyRobotBrandViewSet(mixins.ListModelMixin, mixins.UpdateModelMixin, vi
 class AddNewClientViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = Client.objects.all()
     serializer_class = AddNewClient
-   
 
-class DetachCommunicationDeviceViewSet(mixins.ListModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+
+class DetachCommunicationDeviceViewSet(
+    mixins.ListModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet
+):
     queryset = CommunicationDevice.objects.all()
     serializer_class = DetachCommunicationSerializer
 
 
-class AttachCommunicationDeviceViewSet(mixins.ListModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class AttachCommunicationDeviceViewSet(
+    mixins.ListModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet
+):
     queryset = CommunicationDevice.objects.all()
     serializer_class = AttachCommunicationSerializer
 
 
-class DetachAttachCommunicationDeviceViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class DetachAttachCommunicationDeviceViewSet(
+    mixins.UpdateModelMixin, viewsets.GenericViewSet
+):
     queryset = CommunicationDevice.objects.all()
     serializer_class = DetachCommunicationSerializer
 
     def update(self, request, *args, **kwargs):
         from_device = self.get_object()
-        to_device = request.GET.get('to')
+        to_device = request.GET.get("to")
         new = CommunicationDevice.objects.get(id=to_device)
         new.robot = from_device.robot
         from_device.robot = None
@@ -74,30 +108,40 @@ class DetachAttachCommunicationDeviceViewSet(mixins.UpdateModelMixin, viewsets.G
         new.save()
 
 
-class ModifyRobotViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class ModifyRobotViewSet(
+    mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet
+):
     queryset = Robot.objects.all()
     serializer_class = ModifyRobotSerializer
 
 
-
-
-class AddCommunicationDeviceViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+class AddCommunicationDeviceViewSet(
+    mixins.CreateModelMixin, viewsets.GenericViewSet
+):
     queryset = CommunicationDevice.objects.all()
     serializer_class = AddCommunicationDeviceSerializer
 
 
-class RemoveRobotViewSet(mixins.RetrieveModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
+class RemoveRobotViewSet(
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.GenericViewSet,
+):
     queryset = Robot.objects.all()
     serializer_class = RobotsDataSerializer
 
 
-class RemoveLocationViewSet(mixins.RetrieveModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
+class RemoveLocationViewSet(
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.GenericViewSet,
+):
     queryset = Robot.objects.all()
     serializer_class = DeleteLocationsSerializer
 
     def destroy(self, request, *args, **kwargs):
         device = self.get_object()
-        date = request.GET.get('date')
+        date = request.GET.get("date")
         Location.objects.filter(robot=device, timestamp__date=date).delete()
 
 
@@ -107,9 +151,31 @@ class SetTempertatureViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
 
     def update(self, request, *args, **kwargs):
         device = self.get_object()
-        new_temperature = request.GET.get('temperature')
-        date = request.GET.get('date')
-        Telemetry.objects.filter(robot=device, timestamp__date=date).update(temperature = new_temperature)
+        extra_device = request.GET.get("id")
+        new_temperature = request.GET.get("temperature")
+        date = request.GET.get("date")
+        Telemetry.objects.filter(robot=device, timestamp__date=date).update(
+            temperature=new_temperature
+        )
+        Telemetry.objects.filter(
+            robot=extra_device, timestamp__date=date
+        ).update(temperature=new_temperature)
+
+
+class CreateCompanyViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    queryset = Client.objects.all()
+    serializer_class = AddNewClient
+
+    def create(self, request, *args, **kwargs):
+        nip = request.GET.get("nip")
+        print(
+            "https://wl-api.mf.gov.pl/api/search/nip/"
+            + nip
+            + "/?date="
+            + str(datetime.date(datetime.now()))
+        )
+
+
 # def get_robots(request):
 #     data = Robot.objects.all().select_related('owner', 'type')
 #     result = []
@@ -137,7 +203,7 @@ class SetTempertatureViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
 #         'robot_type': robot.type.robot_type,
 #         }
 #         result.append(aux)
-    
+
 #     return JsonResponse(result, safe=False)
 
 

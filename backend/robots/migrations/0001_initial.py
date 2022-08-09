@@ -7,15 +7,34 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='RobotType',
+            name="RobotType",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('robot_type', models.CharField(choices=[('4W', '4 wheeler'), ('AM', 'Amphibian'), ('TR', 'Tracked'), ('FL', 'Flying')], default='none', max_length=20)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "robot_type",
+                    models.CharField(
+                        choices=[
+                            ("4W", "4 wheeler"),
+                            ("AM", "Amphibian"),
+                            ("TR", "Tracked"),
+                            ("FL", "Flying"),
+                        ],
+                        default="none",
+                        max_length=20,
+                    ),
+                ),
             ],
         ),
     ]

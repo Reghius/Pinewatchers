@@ -6,72 +6,81 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('robots', '0018_auto_20220801_1313'),
+        ("robots", "0018_auto_20220801_1313"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='communicationdevice',
-            name='is_faulty',
+            model_name="communicationdevice",
+            name="is_faulty",
         ),
         migrations.AlterField(
-            model_name='client',
-            name='city',
+            model_name="client",
+            name="city",
             field=models.CharField(blank=True, max_length=100),
         ),
         migrations.AlterField(
-            model_name='client',
-            name='name',
+            model_name="client",
+            name="name",
             field=models.CharField(max_length=200),
         ),
         migrations.AlterField(
-            model_name='client',
-            name='phone_numer',
+            model_name="client",
+            name="phone_numer",
             field=models.CharField(blank=True, max_length=20),
         ),
         migrations.AlterField(
-            model_name='client',
-            name='street',
+            model_name="client",
+            name="street",
             field=models.CharField(blank=True, max_length=100),
         ),
         migrations.AlterField(
-            model_name='client',
-            name='street_number',
+            model_name="client",
+            name="street_number",
             field=models.CharField(blank=True, max_length=100),
         ),
         migrations.AlterField(
-            model_name='communicationdevice',
-            name='name',
+            model_name="communicationdevice",
+            name="name",
             field=models.CharField(max_length=100),
         ),
         migrations.AlterField(
-            model_name='robot',
-            name='name',
+            model_name="robot",
+            name="name",
             field=models.CharField(max_length=200),
         ),
         migrations.AlterField(
-            model_name='robot',
-            name='serial_number',
+            model_name="robot",
+            name="serial_number",
             field=models.CharField(max_length=200),
         ),
         migrations.AlterField(
-            model_name='robotmanufacturer',
-            name='country_of_origin',
+            model_name="robotmanufacturer",
+            name="country_of_origin",
             field=models.CharField(max_length=100),
         ),
         migrations.AlterField(
-            model_name='robotmanufacturer',
-            name='hq_location',
+            model_name="robotmanufacturer",
+            name="hq_location",
             field=models.CharField(max_length=200),
         ),
         migrations.AlterField(
-            model_name='robotmanufacturer',
-            name='name',
+            model_name="robotmanufacturer",
+            name="name",
             field=models.CharField(max_length=200),
         ),
         migrations.AlterField(
-            model_name='robottype',
-            name='robot_type',
-            field=models.CharField(choices=[('4wheeler', '4 wheeler'), ('amphibian', 'amphibian'), ('tracked', 'tracked'), ('flying', 'flying')], default='default', max_length=20),
+            model_name="robottype",
+            name="robot_type",
+            field=models.CharField(
+                choices=[
+                    ("4wheeler", "4 wheeler"),
+                    ("amphibian", "amphibian"),
+                    ("tracked", "tracked"),
+                    ("flying", "flying"),
+                ],
+                default="default",
+                max_length=20,
+            ),
         ),
     ]

@@ -6,26 +6,53 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('robots', '0004_alter_robottype_robot_type'),
+        ("robots", "0004_alter_robottype_robot_type"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Client',
+            name="Client",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=20)),
-                ('KRS_number', models.CharField(max_length=10)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=20)),
+                ("KRS_number", models.CharField(max_length=10)),
             ],
         ),
         migrations.CreateModel(
-            name='RobotManufacturer',
+            name="RobotManufacturer",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=20)),
-                ('country_of_origin', models.CharField(max_length=20)),
-                ('HQ_location', models.CharField(max_length=20)),
-                ('robot_types', models.CharField(choices=[('4WEELER', '4 wheeler'), ('AMPHIBIAN', 'Amphibian'), ('TRACKED', 'Tracked'), ('FLYING', 'Flying')], max_length=20)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=20)),
+                ("country_of_origin", models.CharField(max_length=20)),
+                ("HQ_location", models.CharField(max_length=20)),
+                (
+                    "robot_types",
+                    models.CharField(
+                        choices=[
+                            ("4WEELER", "4 wheeler"),
+                            ("AMPHIBIAN", "Amphibian"),
+                            ("TRACKED", "Tracked"),
+                            ("FLYING", "Flying"),
+                        ],
+                        max_length=20,
+                    ),
+                ),
             ],
         ),
     ]

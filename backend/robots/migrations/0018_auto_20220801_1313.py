@@ -6,33 +6,33 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('robots', '0017_communicationdevice_is_faulty'),
+        ("robots", "0017_communicationdevice_is_faulty"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='client',
-            old_name='City',
-            new_name='city',
+            model_name="client",
+            old_name="City",
+            new_name="city",
         ),
         migrations.RenameField(
-            model_name='client',
-            old_name='KRS_number',
-            new_name='krs_number',
+            model_name="client",
+            old_name="KRS_number",
+            new_name="krs_number",
         ),
         migrations.RenameField(
-            model_name='client',
-            old_name='Phone_numer',
-            new_name='phone_numer',
+            model_name="client",
+            old_name="Phone_numer",
+            new_name="phone_numer",
         ),
         migrations.RenameField(
-            model_name='client',
-            old_name='Street',
-            new_name='street',
+            model_name="client",
+            old_name="Street",
+            new_name="street",
         ),
         migrations.RenameField(
-            model_name='client',
-            old_name='Street_number',
-            new_name='street_number',
+            model_name="client",
+            old_name="Street_number",
+            new_name="street_number",
         ),
     ]

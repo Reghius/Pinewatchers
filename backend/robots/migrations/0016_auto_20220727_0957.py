@@ -6,16 +6,16 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('robots', '0015_alter_robottype_robot_type'),
+        ("robots", "0015_alter_robottype_robot_type"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='location',
-            name='robot_object',
+            model_name="location",
+            name="robot_object",
         ),
         migrations.RemoveField(
-            model_name='telemetry',
-            name='robot_object',
+            model_name="telemetry",
+            name="robot_object",
         ),
     ]

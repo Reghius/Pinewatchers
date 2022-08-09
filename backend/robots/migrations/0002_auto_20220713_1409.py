@@ -6,23 +6,40 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('robots', '0001_initial'),
+        ("robots", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='CommunicationDevice',
+            name="CommunicationDevice",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('device_id', models.CharField(max_length=20)),
-                ('device_x_size', models.FloatField()),
-                ('device_y_size', models.FloatField()),
-                ('device_z_size', models.FloatField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("device_id", models.CharField(max_length=20)),
+                ("device_x_size", models.FloatField()),
+                ("device_y_size", models.FloatField()),
+                ("device_z_size", models.FloatField()),
             ],
         ),
         migrations.AlterField(
-            model_name='robottype',
-            name='robot_type',
-            field=models.CharField(choices=[('4W', '4 wheeler'), ('AM', 'Amphibian'), ('TR', 'Tracked'), ('FL', 'Flying')], default='4W', max_length=2),
+            model_name="robottype",
+            name="robot_type",
+            field=models.CharField(
+                choices=[
+                    ("4W", "4 wheeler"),
+                    ("AM", "Amphibian"),
+                    ("TR", "Tracked"),
+                    ("FL", "Flying"),
+                ],
+                default="4W",
+                max_length=2,
+            ),
         ),
     ]

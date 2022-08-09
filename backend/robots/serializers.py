@@ -1,29 +1,37 @@
 from rest_framework import serializers
-from robots.models import Robot, Client, RobotType, RobotManufacturer, Location, Telemetry, CommunicationDevice
+from robots.models import (
+    Client,
+    CommunicationDevice,
+    Location,
+    Robot,
+    RobotManufacturer,
+    RobotType,
+    Telemetry,
+)
 
 
 class RobotSerializer(serializers.ModelSerializer):
     class Meta:
         model = Robot
-        fields = ('name',)
+        fields = ("name",)
 
 
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        fields = ('name',)
+        fields = ("name",)
 
 
 class RobotTypeSerialzer(serializers.ModelSerializer):
     class Meta:
         model = RobotType
-        fields = ('robot_type',)
+        fields = ("robot_type",)
 
 
 class ManufacturerSerializer(serializers.ModelSerializer):
     class Meta:
         model = RobotManufacturer
-        fields = ('name',)
+        fields = ("name",)
 
 
 class RobotsDataSerializer(serializers.ModelSerializer):
@@ -33,7 +41,7 @@ class RobotsDataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Robot
-        fields = '__all__'
+        fields = "__all__"
 
 
 class GetRobotLocations(serializers.ModelSerializer):
@@ -41,11 +49,7 @@ class GetRobotLocations(serializers.ModelSerializer):
 
     class Meta:
         model = Location
-        fields = (
-            'robot',
-            'latitude',
-            'longitude'
-        )
+        fields = ("robot", "latitude", "longitude")
 
 
 class GetRobotTelemetrics(serializers.ModelSerializer):
@@ -53,12 +57,7 @@ class GetRobotTelemetrics(serializers.ModelSerializer):
 
     class Meta:
         model = Telemetry
-        fields = (
-            'robot',
-            'humidity',
-            'temperature',
-            'pressure'
-        )
+        fields = ("robot", "humidity", "temperature", "pressure")
 
 
 class GetLastLocationSerializer(serializers.ModelSerializer):
@@ -66,27 +65,19 @@ class GetLastLocationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Location
-        fields = (
-            'robot',
-            'timestamp',
-            'latitude',
-            'longitude'
-        )
+        fields = ("robot", "timestamp", "latitude", "longitude")
 
 
 class ModifyRobotBrand(serializers.ModelSerializer):
-
     class Meta:
         model = Robot
-        fields = ('manufacturer',)
-
+        fields = ("manufacturer",)
 
 
 class AddNewClient(serializers.ModelSerializer):
-
     class Meta:
         model = Client
-        fields = ('name', 'krs_number')
+        fields = ("name", "krs_number")
 
 
 class DetachCommunicationSerializer(serializers.ModelSerializer):
@@ -94,7 +85,7 @@ class DetachCommunicationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CommunicationDevice
-        fields = ('id', 'robot')
+        fields = ("id", "robot")
 
 
 class AttachCommunicationSerializer(serializers.ModelSerializer):
@@ -102,7 +93,7 @@ class AttachCommunicationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CommunicationDevice
-        fields = ('id', 'robot')
+        fields = ("id", "robot")
 
 
 class DetachAttachCommunicationSerializer(serializers.ModelSerializer):
@@ -110,25 +101,22 @@ class DetachAttachCommunicationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CommunicationDevice
-        fields = ('id', 'robot')
+        fields = ("id", "robot")
 
 
 class ModifyRobotSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Robot
-        fields = '__all__'
+        fields = "__all__"
 
 
 class AddCommunicationDeviceSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = CommunicationDevice
-        fields = '__all__'
+        fields = "__all__"
 
 
 class DeleteLocationsSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Robot
-        fields = '__all__'
+        fields = "__all__"

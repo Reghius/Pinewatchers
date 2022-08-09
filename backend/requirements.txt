@@ -5,3 +5,4 @@ redis
 celery
 djangorestframework
 django-filter
+requests

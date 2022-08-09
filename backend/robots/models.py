@@ -1,6 +1,7 @@
 from django.db import models
 from robots.validators import validate_krs
 
+
 class Client(models.Model):
     name = models.CharField(max_length=200)
     krs_number = models.IntegerField(validators=[validate_krs])
@@ -10,29 +11,30 @@ class Client(models.Model):
     phone_numer = models.CharField(max_length=20, blank=True)
 
     def __str__(self):
-        return f'{self.name}'
+        return f"{self.name}"
 
 
 class RobotType(models.Model):
-    class ChoiceField():
-        wheeler = '4wheeler'
-        amphibian = 'amphibian'
-        tracked = 'tracked'
-        flying = 'flying'
+    class ChoiceField:
+        wheeler = "4wheeler"
+        amphibian = "amphibian"
+        tracked = "tracked"
+        flying = "flying"
         robot_type_choice = [
-            (wheeler, '4 wheeler'),
-            (amphibian, 'amphibian'),
-            (tracked, 'tracked'),
-            (flying, 'flying'),
+            (wheeler, "4 wheeler"),
+            (amphibian, "amphibian"),
+            (tracked, "tracked"),
+            (flying, "flying"),
         ]
+
     robot_type = models.CharField(
         max_length=20,
         choices=ChoiceField.robot_type_choice,
-        default='default',
+        default="default",
     )
 
     def __str__(self):
-        return f'{self.robot_type}'
+        return f"{self.robot_type}"
 
 
 class RobotManufacturer(models.Model):
@@ -41,19 +43,21 @@ class RobotManufacturer(models.Model):
     hq_location = models.CharField(max_length=200)
 
     def __str__(self):
-        return f'{self.name}'
+        return f"{self.name}"
 
 
 class Robot(models.Model):
     name = models.CharField(max_length=200)
     owner = models.ForeignKey(Client, on_delete=models.CASCADE)
-    manufacturer = models.ForeignKey(RobotManufacturer, on_delete=models.DO_NOTHING)
+    manufacturer = models.ForeignKey(
+        RobotManufacturer, on_delete=models.DO_NOTHING
+    )
     serial_number = models.CharField(max_length=200)
     production_date = models.DateField()
     type = models.ForeignKey(RobotType, on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return f'{self.name}'
+        return f"{self.name}"
 
 
 class CommunicationDevice(models.Model):
@@ -61,10 +65,16 @@ class CommunicationDevice(models.Model):
     x_size = models.FloatField()
     y_size = models.FloatField()
     z_size = models.FloatField()
-    robot = models.OneToOneField(Robot, on_delete=models.SET_NULL, null=True, blank=True, related_name='communication_device')
+    robot = models.OneToOneField(
+        Robot,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="communication_device",
+    )
 
     def __str__(self):
-        return f'{self.name}'
+        return f"{self.name}"
 
 
 class Location(models.Model):
@@ -72,6 +82,9 @@ class Location(models.Model):
     timestamp = models.DateTimeField()
     latitude = models.FloatField()
     longitude = models.FloatField()
+
+    def __str__(self):
+        return f"{self.robot}"
 
 
 class Telemetry(models.Model):
@@ -81,11 +94,17 @@ class Telemetry(models.Model):
     temperature = models.FloatField()
     pressure = models.FloatField()
 
+    def __str__(self):
+        return f"{self.robot}"
+
 
 class RobotModificationHistory(models.Model):
-    name = models.CharField(max_length=200, null=True, blank=True)
-    owner = models.CharField(max_length=200, null=True, blank=True)
-    manufacturer = models.CharField(max_length=200, null=True, blank=True)
-    serial_number = models.CharField(max_length=200, null=True, blank=True)
+    name = models.CharField(max_length=200, blank=True)
+    owner = models.CharField(max_length=200, blank=True)
+    manufacturer = models.CharField(max_length=200, blank=True)
+    serial_number = models.CharField(max_length=200, blank=True)
     production_date = models.DateField(null=True, blank=True)
-    type = models.CharField(max_length=20, null=True, blank=True)
+    type = models.CharField(max_length=20, blank=True)
+
+    def __str__(self):
+        return f"{self.name}"

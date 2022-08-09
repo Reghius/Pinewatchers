@@ -1,13 +1,7 @@
 from datetime import datetime
-
 import requests
 from django_filters import rest_framework as filters
-from rest_framework import generics, mixins, viewsets
-from rest_framework.mixins import (
-    CreateModelMixin,
-    ListModelMixin,
-    UpdateModelMixin,
-)
+from rest_framework import mixins, viewsets
 from robots.filters import LocationFilter, RobotFilter, TelemetryFilter
 from robots.models import (
     Client,
@@ -113,6 +107,9 @@ class ModifyRobotViewSet(
 ):
     queryset = Robot.objects.all()
     serializer_class = ModifyRobotSerializer
+
+    def update(self, request, *args, **kwargs):
+        pass
 
 
 class AddCommunicationDeviceViewSet(

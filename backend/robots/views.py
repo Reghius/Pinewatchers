@@ -10,7 +10,6 @@ from robots.models import (
     Robot,
     Telemetry,
 )
-from django.contrib.auth.models import User
 from robots.paginations import RobotsPagination
 from robots.serializers import (
     AddCommunicationDeviceSerializer,

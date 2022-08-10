@@ -1,3 +1,4 @@
+from robots.tasks import process_location, process_telemetry
 import ast
 import os
 
@@ -7,8 +8,6 @@ from django.conf import settings
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pinewatchers.settings")
 django.setup()
-
-from robots.tasks import process_location, process_telemetry
 
 
 def on_connect(client, *args):

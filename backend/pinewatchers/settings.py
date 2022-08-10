@@ -31,11 +31,11 @@ ALLOWED_HOSTS = [".localhost", "127.0.0.1", "[::1]"]
 # Application definition
 
 INSTALLED_APPS = [
+    "robots.apps.RobotsConfig",
     "rest_framework",
     "rest_framework.authtoken",
     "django_filters",
     "channels",
-    "robots.apps.RobotsConfig",
     # 'corsheaders',
     "django.contrib.admin",
     "django.contrib.auth",
@@ -98,7 +98,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("localhost", 6379)],
+            "hosts": [("redis", 6379)],
         },
     },
 }

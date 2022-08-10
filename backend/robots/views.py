@@ -10,6 +10,7 @@ from robots.models import (
     Robot,
     Telemetry,
 )
+from django.contrib.auth.models import User
 from robots.paginations import RobotsPagination
 from robots.serializers import (
     AddCommunicationDeviceSerializer,
@@ -34,6 +35,11 @@ class RobotsViewSet(
     pagination_class = RobotsPagination
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = RobotFilter
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Robot.objects.filter(proprietor=user)
+        return queryset
 
 
 class LocationFilterViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):

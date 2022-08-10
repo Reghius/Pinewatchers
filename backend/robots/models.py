@@ -59,7 +59,7 @@ class Robot(models.Model):
     serial_number = models.CharField(max_length=200)
     production_date = models.DateField()
     type = models.ForeignKey(RobotType, on_delete=models.DO_NOTHING)
-    proprietor = models.OneToOneField(
+    proprietor = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         null=True)

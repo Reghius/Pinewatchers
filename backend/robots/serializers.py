@@ -8,6 +8,13 @@ from robots.models import (
     RobotType,
     Telemetry,
 )
+from django.contrib.auth.models import User
+
+
+class ProprietorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("username",)
 
 
 class RobotSerializer(serializers.ModelSerializer):
@@ -38,6 +45,7 @@ class RobotsDataSerializer(serializers.ModelSerializer):
     owner = ClientSerializer()
     type = RobotTypeSerialzer()
     manufacturer = ManufacturerSerializer()
+    proprietor = ProprietorSerializer()
 
     class Meta:
         model = Robot

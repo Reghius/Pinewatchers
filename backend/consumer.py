@@ -3,10 +3,11 @@ import os
 import django
 import paho.mqtt.client as mqtt
 from django.conf import settings
-from robots.tasks import process_location, process_telemetry
+
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pinewatchers.settings")
 django.setup()
+from robots.tasks import process_location, process_telemetry
 
 
 def on_connect(client, *args):

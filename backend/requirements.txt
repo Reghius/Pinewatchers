@@ -7,4 +7,3 @@ djangorestframework
 django-filter
 requests
 channels
-channels_redis

@@ -4,7 +4,7 @@ from datetime import datetime
 
 from celery import shared_task
 from django.core.exceptions import FieldError, ObjectDoesNotExist
-from robots.models import CommunicationDevice, Location, Robot, Telemetry
+from robots.models import Location, Robot, Telemetry
 
 
 @shared_task

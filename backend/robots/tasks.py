@@ -8,7 +8,8 @@ from robots.models import Location, Robot, Telemetry
 
 
 @shared_task
-def process_location(sensor_name, location_str):
+def process_location(sensor_name, data_dict):
+    location_str = data_dict["data"]
     seperated_location = textwrap.wrap(location_str, 16)
     timestamp = datetime.fromtimestamp(
         struct.unpack(">d", bytearray.fromhex(seperated_location[0]))[0]
@@ -21,7 +22,7 @@ def process_location(sensor_name, location_str):
         robot = Robot.objects.get(communication_device__name=sensor_name)
 
         Location.objects.create(
-            robot_name=robot,
+            robot=robot,
             timestamp=timestamp,
             latitude=latitude,
             longitude=longitude,
@@ -33,7 +34,8 @@ def process_location(sensor_name, location_str):
 
 
 @shared_task
-def process_telemetry(sensor_name, telemetry_str):
+def process_telemetry(sensor_name, data_dict):
+    telemetry_str = data_dict["data"]
     timestamp = datetime.fromtimestamp(
         struct.unpack(">d", bytearray.fromhex(telemetry_str[:16]))[0]
     )
@@ -44,7 +46,7 @@ def process_telemetry(sensor_name, telemetry_str):
         robot = Robot.objects.get(communication_device__name=sensor_name)
 
         Telemetry.objects.create(
-            robot_name=robot,
+            robot=robot,
             timestamp=timestamp,
             humidity=humidity,
             temperature=temperature,

@@ -202,8 +202,15 @@ class SetTempertatureViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
         extra_device = request.GET.get("id")
         new_temperature = request.GET.get("temperature")
         date = request.GET.get("date")
-        Telemetry.objects.filter(robot__proprietor__in=group, robot=device, timestamp__date=date).update(temperature=new_temperature)
-        Telemetry.objects.filter(robot__proprietor__in=group, robot=extra_device, timestamp__date=date).update(temperature=new_temperature)
+        Telemetry.objects.filter(
+            robot__proprietor__in=group,
+            robot=device, timestamp__date=date
+        ).update(temperature=new_temperature)
+        Telemetry.objects.filter(
+            robot__proprietor__in=group,
+            robot=extra_device,
+            timestamp__date=date
+        ).update(temperature=new_temperature)
 
 
 class CreateCompanyViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):

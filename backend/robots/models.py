@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import MinLengthValidator
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
 
 
 class Client(models.Model):
@@ -13,6 +13,7 @@ class Client(models.Model):
     street = models.CharField(max_length=100, blank=True)
     street_number = models.CharField(max_length=100, blank=True)
     phone_numer = models.CharField(max_length=20, blank=True)
+    group = models.OneToOneField(Group, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.name}"
@@ -60,7 +61,7 @@ class Robot(models.Model):
     production_date = models.DateField()
     type = models.ForeignKey(RobotType, on_delete=models.DO_NOTHING)
     proprietor = models.ForeignKey(
-        User,
+        Group,
         on_delete=models.CASCADE,
         null=True)
 

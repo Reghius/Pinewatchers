@@ -8,13 +8,13 @@ from robots.models import (
     RobotType,
     Telemetry,
 )
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 
 class ProprietorSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ("username",)
+        model = Group
+        fields = ("name",)
 
 
 class RobotSerializer(serializers.ModelSerializer):
@@ -119,11 +119,10 @@ class ModifyRobotSerializer(serializers.ModelSerializer):
 
 
 class AddCommunicationDeviceSerializer(serializers.ModelSerializer):
-    owner = ClientSerializer
 
     class Meta:
         model = CommunicationDevice
-        fields = ("name", "owner")
+        fields = ("name", "x_size", "y_size", "z_size")
 
 
 class DeleteLocationsSerializer(serializers.ModelSerializer):

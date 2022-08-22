@@ -35,26 +35,26 @@ services:
     volumes:
       - cache:/data
   
-  celery:
-    build: ./backend
-    container_name: celery
-    command: sh -c 'celery -A pinewatchers worker -l info'
-    volumes:
-      - ./backend:/code
-    env_file:
-      - .env
-    depends_on:
-      - backend
-      - redis
+  # celery:
+  #   build: ./backend
+  #   container_name: celery
+  #   command: sh -c 'celery -A pinewatchers worker -l info'
+  #   volumes:
+  #     - ./backend:/code
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - backend
+  #     - redis
   
-  consumer:
-    image: backend-image
-    container_name: consumer
-    command: python3 consumer.py
-    env_file:
-      - .env
-    depends_on:
-      - redis
+  # consumer:
+  #   image: backend-image
+  #   container_name: consumer
+  #   command: python3 consumer.py
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - redis
 
 volumes:
   postgres_data:

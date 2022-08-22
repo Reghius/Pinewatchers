@@ -114,6 +114,7 @@ class RobotModificationHistory(models.Model):
     serial_number = models.CharField(max_length=200, blank=True)
     production_date = models.DateField(null=True, blank=True)
     type = models.CharField(max_length=20, blank=True)
+    modification_date = models.DateTimeField()
 
     def __str__(self):
         return f"{self.name}"

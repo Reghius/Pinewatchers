@@ -89,4 +89,5 @@ class RobotModificationHistoryAdmin(admin.ModelAdmin):
         "serial_number",
         "production_date",
         "type",
+        "modification_date"
     )

@@ -5,7 +5,6 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 class SensorFailConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.room_group_name = "fault_log"
-        # self.channel_name = "fault_log"
 
         await self.channel_layer.group_add(
             self.room_group_name,

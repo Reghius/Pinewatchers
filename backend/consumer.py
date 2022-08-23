@@ -30,7 +30,6 @@ def on_message(client, userdata, msg):
         process_telemetry.delay(sensor_name, aux_payload)
     elif message_topic == "fault_log":
         process_fault.delay(sensor_name, aux_payload)
-        print("Task consumed")
     else:
         raise NotImplementedError("Unsupported message type.")
 

@@ -7,7 +7,11 @@ from django.conf import settings
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pinewatchers.settings")
 django.setup()
-from robots.tasks import process_location, process_telemetry  # noqa: E402
+from robots.tasks import (      # noqa: E402
+    process_location,
+    process_telemetry,
+    process_fault
+)
 
 
 def on_connect(client, *args):
@@ -24,8 +28,9 @@ def on_message(client, userdata, msg):
         process_location.delay(sensor_name, aux_payload)
     elif message_topic == "telemetry":
         process_telemetry.delay(sensor_name, aux_payload)
-    # elif message_topic == "info":
-    #     process_info.delay(sensor_name, aux_payload)
+    elif message_topic == "fault_log":
+        process_fault.delay(sensor_name, aux_payload)
+        print("Task consumed")
     else:
         raise NotImplementedError("Unsupported message type.")
 

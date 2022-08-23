@@ -3,8 +3,10 @@ import textwrap
 from datetime import datetime
 
 from celery import shared_task
+from channels.layers import get_channel_layer
 from django.core.exceptions import FieldError, ObjectDoesNotExist
 from robots.models import Location, Robot, Telemetry
+from asgiref.sync import async_to_sync
 
 
 @shared_task
@@ -56,3 +58,18 @@ def process_telemetry(sensor_name, data_dict):
         pass
     except ObjectDoesNotExist:
         pass
+
+
+@shared_task
+def process_fault(sensor_name, data_dict):
+    sensor = sensor_name
+    fault = data_dict["info"]
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        "fault_log",
+        {
+            "type": "fault_log",
+            "message": fault,
+            "sensor": sensor
+        }
+    )
